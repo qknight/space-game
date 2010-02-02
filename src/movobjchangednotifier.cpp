@@ -22,3 +22,6 @@ void movObjChangedNotifier::notifyDelet(notifyable* obj)
   delete this;
 }
 
+SceneNode* movObjChangedNotifier::getNode(){
+  return this->node;
+}

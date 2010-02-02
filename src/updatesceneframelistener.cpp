@@ -4,6 +4,8 @@
 
 UpdateSceneFrameListener::UpdateSceneFrameListener(RenderWindow* win, Camera* cam, SceneManager* sceneMgr, Game* modle): ExampleFrameListener(win, cam, false,false)
 {
+  CamPosition = CAMTOPVIEW;
+  this->Zoom = 0;
   mMouse->capture();
   mKeyboard->capture();
   game = modle;
@@ -17,7 +19,9 @@ UpdateSceneFrameListener::UpdateSceneFrameListener(RenderWindow* win, Camera* ca
   this->mSceneMgr = sceneMgr;
   this->NodesNum = 0;
   
-
+  this->mCamNode = this->player->tryGetNode();
+  if (this->mCamNode = NULL)
+    cout << "PLAYER NODE NICHT GESETZT!";
     
 }
 
@@ -49,6 +53,8 @@ bool UpdateSceneFrameListener::frameStarted(const FrameEvent &evt)
   this->getNewObjects(); 
     
   this->game->moveLightObjects();
+  
+  this->moveMyCamera();
   
   if (this->player == NULL){
     return false;
@@ -90,7 +96,7 @@ void UpdateSceneFrameListener::getNewObjects()
 	SceneNode *nodePlan = this->mSceneMgr->getRootSceneNode()->createChildSceneNode("PlanetNode" + str.str());
 	nodePlan->scale(Vector3(2,2,2));
 	obj->addNotifier(new movObjChangedNotifier(nodePlan));
-	Entity *Planet = mSceneMgr->createEntity("Planet" + str.str(),"sphere.mesh");
+	Entity *Planet = mSceneMgr->createEntity("Planet" + str.str(),"test.3ds");
 	nodePlan->attachObject(Planet);
 	nodePlan->setPosition(Vector3(0,0,SPIELEBENE));
     }
@@ -109,19 +115,24 @@ bool UpdateSceneFrameListener::KeyInput()
   Vector2 vec;
   
   //Schüsse abfeuern
+  
   vec.x = 0;
   vec.y = 0;
-  if(mKeyboard->isKeyDown(OIS::KC_W)){
-    vec.y += 1;
-  }
-  if(mKeyboard->isKeyDown(OIS::KC_S)){
-    vec.y -= 1;
-  }
-  if(mKeyboard->isKeyDown(OIS::KC_A)){
-    vec.x -= 1;
-  }
-  if(mKeyboard->isKeyDown(OIS::KC_D)){
-    vec.x += 1;
+  if (mKeyboard->isKeyDown(OIS::KC_SPACE)){
+    vec = player->getSpeed();
+  }else{
+    if(mKeyboard->isKeyDown(OIS::KC_W)){
+      vec.y += 1;
+    }
+    if(mKeyboard->isKeyDown(OIS::KC_S)){
+      vec.y -= 1;
+    }
+    if(mKeyboard->isKeyDown(OIS::KC_A)){
+      vec.x -= 1;
+    }
+    if(mKeyboard->isKeyDown(OIS::KC_D)){
+      vec.x += 1;
+    }
   }
   if (!vec.isZeroLength()){
     vec.normalise();
@@ -150,5 +161,48 @@ bool UpdateSceneFrameListener::KeyInput()
   vec.normalise();
   vec *= SPIELERBESCHLEUNIGUNG;
   player->accelerate(&vec);
+  
+  
+  //Cam Positionen
+  if(mKeyboard->isKeyDown(OIS::KC_F1)){
+    this->CamPosition = CAMTOPVIEW;
+  }
+  if(mKeyboard->isKeyDown(OIS::KC_F2)){
+    this->CamPosition = CAMFOLLOW;
+  }
+  //Zoom in der CAMTOPVIEW
+  if(mKeyboard->isKeyDown(OIS::KC_PGUP)){
+    this->Zoom += 100;
+  }
+   if(mKeyboard->isKeyDown(OIS::KC_PGDOWN)){
+    this->Zoom -= 100;
+  }
   return true;
+}
+void UpdateSceneFrameListener::moveMyCamera(){
+  switch (CamPosition){
+    case CAMTOPVIEW:{
+	int x = this->player->getPosition().x;
+	int y = this->player->getPosition().y;
+	this->mCamera->setPosition(Vector3(0, 0, Zoom));
+	this->mCamera->lookAt(Vector3(x,y,SPIELEBENE));
+      }
+      break;
+    case CAMFOLLOW:{
+	float x = this->player->getPosition().x;
+	float y = this->player->getPosition().y;
+	Vector2 locat = player->getSpeed();
+	if (locat.squaredLength() > 0)
+	  locat.normalise();
+	
+	float sX = locat.x * 1000;
+	float sY = locat.y * 1000;
+	
+	this->mCamera->setPosition(Vector3(x + sX,y + sY,SPIELEBENE + 250));
+	this->mCamera->lookAt(Vector3(x ,y,SPIELEBENE));
+      
+      }
+      break;
+  }
+  
 }

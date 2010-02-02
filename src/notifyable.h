@@ -10,11 +10,12 @@ class notifyable {
 protected:
     void notifyDelet();
     void notify();
+    
+    std::list<movObjChangedNotifier*> mustBeNotified;
 public:
     void addNotifier(movObjChangedNotifier *notifier);
     void removeNotifier(movObjChangedNotifier *notifier);
 
-    std::list<movObjChangedNotifier*> mustBeNotified;
 };
 
 #endif // NOTIFYABLE_H

@@ -27,6 +27,8 @@ class movableObject : public notifyable
     Vector2 getSpeed();
     void setSpeed(Vector2 speed);
       
+    // gibt den ersten hinzugefuegten SceneNode oder NULL zurueck
+    SceneNode* tryGetNode();
   protected:
     Vector2 position;
     Vector2 speed;

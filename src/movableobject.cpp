@@ -1,4 +1,5 @@
 #include "movableobject.h"
+#include "movobjchangednotifier.h"
 
 
 
@@ -113,6 +114,17 @@ Vector2 movableObject::getSpeed()
 void movableObject::setSpeed(Vector2 speed)
 {
   this->speed = speed;
+}
+
+SceneNode* movableObject::tryGetNode(){
+  std::list<movObjChangedNotifier*>::iterator it;
+  for (it = this->mustBeNotified.begin(); it != this->mustBeNotified.end(); ++it){
+    SceneNode* node =(*it)->getNode();
+    if (node != NULL){
+      return node;
+    }
+  }
+  return NULL;
 }
 
 

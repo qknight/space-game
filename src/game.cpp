@@ -4,9 +4,9 @@
 Game::Game(){
  //this->lightObjects->add(mew movableObject);
 
-// lightObjects = new list<movableObject>();
-// heavyObjects = new list<movableObject>();
-// nearlyAddedObjects = new stack<movableObject>();
+ //lightObjects = new list<movableObject*>();
+ //heavyObjects = new list<movableObject*>();
+ //nearlyAddedObjects = new stack<movableObject*>();
 }
 void Game::addLightObject(movableObject *mobj){
     this->lightObjects.push_back(mobj);
@@ -59,7 +59,7 @@ void Game::moveHeavyObjects(){
   //TODO
 }
 
-//TODO DUMMYFUNKTION DIE NUR OBJEKTE IM MITTELPUNT ENTFERNT!!
+//TODO Bisher: DUMMYFUNKTION DIE NUR OBJEKTE IM MITTELPUNT ENTFERNT!!
 void Game::kollisionen() {  
   list<movableObject*>::iterator it;
   for (it = this->lightObjects.begin(); it != this->lightObjects.end(); ++ it){

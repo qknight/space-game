@@ -24,6 +24,7 @@ public:
     bool processUnbufferedMouseInput(const FrameEvent& evt);
 
     bool frameStarted(const FrameEvent &evt);
+    void moveMyCamera();
 
 protected:
     Game *game;
@@ -37,6 +38,13 @@ protected:
     int NodesNum;
 
     void getNewObjects();
+    
+    //Verschiedene Kammerapositionen.
+    static const int CAMTOPVIEW = 0;
+    static const int CAMFOLLOW = 1;
+    int CamPosition;
+    
+    float Zoom;
 };
 
 #endif // UPDATESCENEFRAMELISTENER_H

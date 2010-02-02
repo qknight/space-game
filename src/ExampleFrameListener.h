@@ -60,27 +60,27 @@ protected:
 
 		// update stats when necessary
 		try {
-// 			OverlayElement* guiAvg = OverlayManager::getSingleton().getOverlayElement("Core/AverageFps");
-// 			OverlayElement* guiCurr = OverlayManager::getSingleton().getOverlayElement("Core/CurrFps");
-// 			OverlayElement* guiBest = OverlayManager::getSingleton().getOverlayElement("Core/BestFps");
-// 			OverlayElement* guiWorst = OverlayManager::getSingleton().getOverlayElement("Core/WorstFps");
-// 
-// 			const RenderTarget::FrameStats& stats = mWindow->getStatistics();
-// 			guiAvg->setCaption(avgFps + StringConverter::toString(stats.avgFPS));
-// 			guiCurr->setCaption(currFps + StringConverter::toString(stats.lastFPS));
-// 			guiBest->setCaption(bestFps + StringConverter::toString(stats.bestFPS)
-// 				+" "+StringConverter::toString(stats.bestFrameTime)+" ms");
-// 			guiWorst->setCaption(worstFps + StringConverter::toString(stats.worstFPS)
-// 				+" "+StringConverter::toString(stats.worstFrameTime)+" ms");
-// 
-// 			OverlayElement* guiTris = OverlayManager::getSingleton().getOverlayElement("Core/NumTris");
-// 			guiTris->setCaption(tris + StringConverter::toString(stats.triangleCount));
-// 
-// 			OverlayElement* guiBatches = OverlayManager::getSingleton().getOverlayElement("Core/NumBatches");
-// 			guiBatches->setCaption(batches + StringConverter::toString(stats.batchCount));
-// 
-// 			OverlayElement* guiDbg = OverlayManager::getSingleton().getOverlayElement("Core/DebugText");
-// 			guiDbg->setCaption(mDebugText);
+ 			OverlayElement* guiAvg = OverlayManager::getSingleton().getOverlayElement("Core/AverageFps");
+ 			OverlayElement* guiCurr = OverlayManager::getSingleton().getOverlayElement("Core/CurrFps");
+ 			OverlayElement* guiBest = OverlayManager::getSingleton().getOverlayElement("Core/BestFps");
+ 			OverlayElement* guiWorst = OverlayManager::getSingleton().getOverlayElement("Core/WorstFps");
+ 
+ 			const RenderTarget::FrameStats& stats = mWindow->getStatistics();
+ 			guiAvg->setCaption(avgFps + StringConverter::toString(stats.avgFPS));
+ 			guiCurr->setCaption(currFps + StringConverter::toString(stats.lastFPS));
+ 			guiBest->setCaption(bestFps + StringConverter::toString(stats.bestFPS)
+ 				+" "+StringConverter::toString(stats.bestFrameTime)+" ms");
+ 			guiWorst->setCaption(worstFps + StringConverter::toString(stats.worstFPS)
+ 				+" "+StringConverter::toString(stats.worstFrameTime)+" ms");
+ 
+ 			OverlayElement* guiTris = OverlayManager::getSingleton().getOverlayElement("Core/NumTris");
+ 			guiTris->setCaption(tris + StringConverter::toString(stats.triangleCount));
+ 
+ 			OverlayElement* guiBatches = OverlayManager::getSingleton().getOverlayElement("Core/NumBatches");
+			guiBatches->setCaption(batches + StringConverter::toString(stats.batchCount));
+
+			OverlayElement* guiDbg = OverlayManager::getSingleton().getOverlayElement("Core/DebugText");
+			guiDbg->setCaption(mDebugText);
 		}
 		catch(...) { /* ignore */ }
 	}

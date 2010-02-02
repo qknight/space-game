@@ -20,7 +20,7 @@ class movObjChangedNotifier : public Notifier
     void notify(notifyable* obj);
     void notifyDelet(notifyable* obj);
 //     test movableObject;
-    
+    SceneNode* getNode();
   protected:
     SceneNode *node;
 };

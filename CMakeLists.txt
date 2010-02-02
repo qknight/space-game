@@ -11,8 +11,8 @@ INCLUDE_DIRECTORIES(
 #   "/usr/share/doc/ogre-1.6.3/OgreMain/include"
   "/usr/include/OGRE/"
   "/usr/include/OIS/"
-  #"/home/billy/ogre/ogre/Samples/Common/include"
-  #"/home/billy/ogre/ogre/OgreMain/include"
+  "/home/billy/ogre/ogre/Samples/Common/include"
+  "/home/billy/ogre/ogre/OgreMain/include"
   #"/home/billy/projects/hihi/src"
 )
 
