@@ -59,13 +59,13 @@ void Game::moveHeavyObjects(){
   list<movableObject*>::iterator ith;
   list<movableObject*>::iterator itl;
   //gravitation berechnen
- /* for (ith = this->heavyObjects.begin();ith != this->heavyObjects.end(); ++ith){
+  for (ith = this->heavyObjects.begin();ith != this->heavyObjects.end(); ++ith){
     for (itl = this->heavyObjects.begin();itl != this->heavyObjects.end(); ++itl){
       if (ith != itl){
 	(*itl)->calculateGravity((*ith));
       }
     }
-  }*/
+  }
   
     //Das Bewegen Berechnen
   for (itl = this->heavyObjects.begin(); itl != this->heavyObjects.end(); ++ itl){

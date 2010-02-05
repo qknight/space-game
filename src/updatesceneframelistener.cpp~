@@ -46,14 +46,14 @@ UpdateSceneFrameListener::UpdateSceneFrameListener(RenderWindow* win, Camera* ca
   Moon->circlespeed = 0.009;
   
   game->addHeavyObject(Moon); 
-/*
+
   movableObject *Komet = new movableObject("Komet", 4000000000000);
   Komet->circle = true;
   Komet->a = 15000;
   Komet->b = 1300;
   Komet->circlespeed = 0.03;
   game->addHeavyObject(Komet);
-  */
+  
   
   this->mSceneMgr = sceneMgr;
   this->NodesNum = 0;

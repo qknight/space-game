@@ -17,7 +17,7 @@ class Player : public movableObject
     void reload();
     Ogre::String getObjektName();
 //    int getNumber();
-    bool BoostAvaible();
+    void aktivateBoost();
   protected:
     static const float MAXENERGY = 66;
     static const float INITIALLIVE = 100;

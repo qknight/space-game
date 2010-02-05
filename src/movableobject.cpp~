@@ -16,10 +16,10 @@ movableObject::movableObject(String ObjectName, float heaviness)
   this->acceleration.x = 0;
   this->acceleration.y = 0;
   
-  a = 1;
-  b = 1;
+  a = 0;
+  b = 0;
   this->circle = false;
- // this->radius =0;
+  this->radius =0;
   circlespeed = 0;
   phi = 0;
   

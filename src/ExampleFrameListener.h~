@@ -296,13 +296,13 @@ public:
 
 	virtual void showDebugOverlay(bool show)
 	{
-	/*	if (mDebugOverlay)
+		if (mDebugOverlay)
 		{
 			if (show)
 				mDebugOverlay->show();
 			else
 				mDebugOverlay->hide();
-		}*/
+		}
 	}
 
 	// Override frameRenderingQueued event to process that (don't care about frameEnded)

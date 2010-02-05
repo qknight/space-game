@@ -21,7 +21,7 @@ void Player::reload()
 }
 bool Player::BoostAvaible()
 {
-  if (this->boostAvaible > 1){
+  if (this->boostAvaible > 0){
    boostAvaible--;
    return true;
   }
