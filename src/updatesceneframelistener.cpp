@@ -15,11 +15,11 @@ UpdateSceneFrameListener::UpdateSceneFrameListener(RenderWindow* win, Camera* ca
   player->accelerate(Vector2(5,-5));
   game->addLightObject(player);
   mCamNode = cam->getParentSceneNode();
-  if (player->tryGetNode() != NULL){
-    mCamNode->detachObject(cam);http://torrent.mandriva.com/public/2010.0/mandriva-linux-free-2010.0-x86_64.torrent
-    mCamNode = player->tryGetNode();
-    mCamNode->attachObject(cam);
-  }
+//   if (player->tryGetNode() != NULL){
+//     mCamNode->detachObject(cam);
+//     mCamNode = player->tryGetNode();
+//     mCamNode->attachObject(cam);
+//   }
     
   this->showDebugOverlay(false);
   
@@ -126,7 +126,6 @@ void UpdateSceneFrameListener::getNewObjects()
 	ent = mSceneMgr->createEntity("player"+str.str(),"razor.mesh");
     }else if (objName == "projectile"){
 	node->scale(Vector3(5,5,5));
-	//node->pitch(Degree(90));
 	obj->addNotifier(new movObjChangedNotifier(node, mSceneMgr));
 	ent = mSceneMgr->createEntity("projectile" + str.str(),"Barrel.mesh");
     }else if(objName == "Planet"){
@@ -215,7 +214,7 @@ bool UpdateSceneFrameListener::KeyInput()
  
   if (mKeyboard->isKeyDown(OIS::KC_SPACE)){
     if (player->BoostAvaible())
-      vec *=SPEEDBOOST;
+      vec *=SPEEDBOOSTSTRENGTH;
   }
   player->accelerate(vec);
   
@@ -235,6 +234,14 @@ bool UpdateSceneFrameListener::KeyInput()
   }
    if(mKeyboard->isKeyDown(OIS::KC_PGDOWN)){
     this->Zoom -= 500;
+  }
+  
+  
+  //Naechstes Leben
+  if (mKeyboard->isKeyDown(OIS::KC_SPACE) && player->isDead()){
+      this->player->teleport(Vector2(rand()%(2*SPIELFELDBREITE) - SPIELFELDBREITE,rand()%(2*SPIELFELDBREITE) - SPIELFELDBREITE));
+      this->player->setSpeed(Vector2(rand()%3, rand()%3));
+      this->player->awake();
   }
   return true;
 }

@@ -19,6 +19,8 @@ class Player : public movableObject
 //    int getNumber();
     bool BoostAvaible();
   protected:
+    bool boost;
+    
     static const float MAXENERGY = 66;
     static const float INITIALLIVE = 100;
     static const float INITIALSHILD = 33;

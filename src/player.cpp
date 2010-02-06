@@ -18,14 +18,17 @@ void Player::reload()
   firedWappon--;
   if (boostAvaible < SPEEDBOOST)
     boostAvaible += 0.02;
+  if (boostAvaible >= SPEEDBOOST)
+    this->boost = true;
 }
 bool Player::BoostAvaible()
 {
-  if (this->boostAvaible > 1){
-   boostAvaible--;
-   return true;
+  if (this->boostAvaible > 1 && boost){
+      boostAvaible--;
+      return true;
   }
- return false;  
+  boost = false;
+  return false;  
 }
 Player::Player(Game *game,float heaviness):movableObject("Player", heaviness)
 {
@@ -36,6 +39,8 @@ Player::Player(Game *game,float heaviness):movableObject("Player", heaviness)
   wappon = INITIALWAPPON;
   
   firedWappon = 0;
+  boost = true;
+  boostAvaible = SPEEDBOOST;
   //num++;
 }
 
