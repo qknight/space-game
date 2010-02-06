@@ -34,7 +34,6 @@ class movableObject : public notifyable
     Vector2 constAcceleration;
     
     bool circle;
-    movableObject * circlePoint;
     void setCircleRadius(float r);
   //  float radius;
     float circlespeed;
@@ -43,6 +42,8 @@ class movableObject : public notifyable
     void setGravitationPartner(movableObject *mov);
     
   protected:
+    movableObject * circlePoint;
+    
     float phi;
     
     Vector2 position;
