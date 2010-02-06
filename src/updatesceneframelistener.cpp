@@ -6,35 +6,33 @@ UpdateSceneFrameListener::UpdateSceneFrameListener(RenderWindow* win, Camera* ca
 {
   CamPosition = CAMFOLLOW;
 //  CamPosition = 3;
-  this->Zoom = 0;
+  this->Zoom = 500;
   mMouse->capture();
   mKeyboard->capture();
   game = modle;
   player = new Player(game, PLAYERHEAVINESS);
-  player->teleport(Vector2(5500,5500));
-  player->accelerate(Vector2(-5,-5));
+  player->teleport(Vector2(-5500,5500));
+  player->accelerate(Vector2(5,-5));
   game->addLightObject(player);
   mCamNode = cam->getParentSceneNode();
   if (player->tryGetNode() != NULL){
-    mCamNode->detachObject(cam);
+    mCamNode->detachObject(cam);http://torrent.mandriva.com/public/2010.0/mandriva-linux-free-2010.0-x86_64.torrent
     mCamNode = player->tryGetNode();
     mCamNode->attachObject(cam);
   }
     
   this->showDebugOverlay(false);
   
-
-    
   movableObject *Sun = new movableObject("SUN", SUNHEAVINESS);
   Sun->teleport(Vector2(0,0));
   game->addHeavyObject(Sun);
   
   movableObject *Planet = new movableObject("Planet", PLANETHEAVINESS);
   Planet->circle = true;
-  Planet->setCircleRadius(5000);
+  Planet->setCircleRadius(6500);
   Planet->setGravitationPartner(Sun);
   
-  Planet->circlespeed = 0.001;
+  Planet->circlespeed = 0.009;
   
   game->addHeavyObject(Planet);
 						  
@@ -44,17 +42,17 @@ UpdateSceneFrameListener::UpdateSceneFrameListener(RenderWindow* win, Camera* ca
   Moon->setCircleRadius(1000);
   Moon->setGravitationPartner(Planet);
   
-  Moon->circlespeed = 0.009;
+  Moon->circlespeed = 0.021;
   
   game->addHeavyObject(Moon); 
 
   movableObject *Komet = new movableObject("Komet", 4000000000000);
   Komet->circle = true;
-  Komet->a = 2000;
+  Komet->a = 4000;
   Komet->b = 6300;
   Komet->circlespeed = 0.01;
   movableObject *Hack = new movableObject("Hack", 0);
-  Hack->teleport(Vector2(0,8000));
+  Hack->teleport(Vector2(0,28000));
   Komet->setGravitationPartner(Sun);
   
   game->addHeavyObject(Komet);
@@ -99,6 +97,7 @@ bool UpdateSceneFrameListener::frameStarted(const FrameEvent &evt)
     
   this->game->moveLightObjects();
   this->game->moveHeavyObjects();
+  this->game->removeOutOfAreaObjects();
   
   this->moveCamera();
   this->moveMyCamera();
@@ -124,7 +123,7 @@ void UpdateSceneFrameListener::getNewObjects()
 //	mylogger::log("player "+ str.str());
 	SceneNode *nodePlayer = this->mSceneMgr->getRootSceneNode()->createChildSceneNode(str.str());
 	nodePlayer->pitch(Degree(90));
-	player->addNotifier(new movObjChangedNotifier(nodePlayer));
+	player->addNotifier(new movObjChangedNotifier(nodePlayer, mSceneMgr));
 	Entity *ship = mSceneMgr->createEntity("player"+str.str(),"razor.mesh");
 	nodePlayer->attachObject(ship);
 	nodePlayer->setPosition(Vector3(obj->getPosition().x,obj->getPosition().y,SPIELEBENE));
@@ -134,7 +133,7 @@ void UpdateSceneFrameListener::getNewObjects()
 	SceneNode *nodeProj = this->mSceneMgr->getRootSceneNode()->createChildSceneNode("ProjectieleNode" + str.str());
 	nodeProj->scale(Vector3(5,5,5));
 	nodeProj->pitch(Degree(90));
-	obj->addNotifier(new movObjChangedNotifier(nodeProj));
+	obj->addNotifier(new movObjChangedNotifier(nodeProj, mSceneMgr));
 	Entity *Proj = mSceneMgr->createEntity("projectile" + str.str(),"Barrel.mesh");
 	nodeProj->attachObject(Proj);
 	nodeProj->setPosition(Vector3(obj->getPosition().x,obj->getPosition().y,SPIELEBENE));
@@ -142,7 +141,7 @@ void UpdateSceneFrameListener::getNewObjects()
 //	mylogger::log("Planet "+ str.str());
 	SceneNode *nodePlan = this->mSceneMgr->getRootSceneNode()->createChildSceneNode("PlanetNode" + str.str());
 	nodePlan->scale(Vector3(3,3,3));
-	obj->addNotifier(new movObjChangedNotifier(nodePlan));
+	obj->addNotifier(new movObjChangedNotifier(nodePlan, mSceneMgr));
 	Entity *Planet = mSceneMgr->createEntity("Planet" + str.str(),"sphere.mesh");
 	nodePlan->attachObject(Planet);
 	nodePlan->setPosition(Vector3(obj->getPosition().x,obj->getPosition().y,SPIELEBENE));
@@ -150,23 +149,26 @@ void UpdateSceneFrameListener::getNewObjects()
 //	mylogger::log("Planet "+ str.str());
 	SceneNode *nodeSUN = this->mSceneMgr->getRootSceneNode()->createChildSceneNode("SUNNode" + str.str());
 	nodeSUN->scale(Vector3(55,55,55));
-	obj->addNotifier(new movObjChangedNotifier(nodeSUN));
+	obj->addNotifier(new movObjChangedNotifier(nodeSUN, mSceneMgr));
 	Entity *SUN = mSceneMgr->createEntity("SUN" + str.str(),"Abstrikes.mesh");
+	//SUN->
 	nodeSUN->attachObject(SUN);
 	nodeSUN->setPosition(Vector3(obj->getPosition().x,obj->getPosition().y,SPIELEBENE));
     }else if(objName == "Moon"){
 //	mylogger::log("Planet "+ str.str());
+  //initialisiert random seed
+  srand(111);
 	SceneNode *nodeMoon = this->mSceneMgr->getRootSceneNode()->createChildSceneNode("MoonNode" + str.str());
 //	nodeMoon->scale(1,1,1);
-	obj->addNotifier(new movObjChangedNotifier(nodeMoon));
+	obj->addNotifier(new movObjChangedNotifier(nodeMoon, mSceneMgr));
 	Entity *moon = mSceneMgr->createEntity("Moon" + str.str(),"sphere.mesh");
 	nodeMoon->attachObject(moon);
 	nodeMoon->setPosition(Vector3(obj->getPosition().x,obj->getPosition().y,SPIELEBENE));
     }else if(objName == "Komet"){
 //	mylogger::log("Planet "+ str.str());
 	SceneNode *nodeKomet = this->mSceneMgr->getRootSceneNode()->createChildSceneNode("KometNode" + str.str());
-	nodeKomet->scale(0.381,0.41,0.5);
-	obj->addNotifier(new movObjChangedNotifier(nodeKomet));
+	nodeKomet->scale(0.281,0.41,0.8);
+	obj->addNotifier(new movObjChangedNotifier(nodeKomet, mSceneMgr));
 	Entity *komet = mSceneMgr->createEntity("Komet" + str.str(),"sphere.mesh");
 	nodeKomet->setPosition(Vector3(obj->getPosition().x,obj->getPosition().y,SPIELEBENE));
 	nodeKomet->attachObject(komet);

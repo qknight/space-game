@@ -14,6 +14,9 @@ class test  {
   }
 
   void go(){
+    //initialisiert random seed
+    srand(111);
+    
     controller->GO();
   }
   protected:

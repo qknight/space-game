@@ -24,10 +24,13 @@ movableObject::movableObject(String ObjectName, float heaviness)
   phi = 0;
   
   this->heaviness = heaviness;
+  
+  dead = false;
 }
 
 movableObject::~movableObject()
 {
+  this->notifyDelet();
 }
 void movableObject::setGravitationPartner(movableObject *mov){
     this->circlePoint = mov;
@@ -56,7 +59,7 @@ void movableObject::move(){
  //  cout << this->circlePoint->position.x << endl;
  //  cout << this->circlePoint->position.y << endl;
     
-  }else{
+  }else if (!dead){
     
     speed += acceleration;
     // speed += constAcceleration;
@@ -66,6 +69,7 @@ void movableObject::move(){
     this->acceleration.y = 0;
   }
 //  mylogger::log("Object " + this->getObjektName() + " moved");
+  
   notifyable::notify();
 }
 
@@ -161,7 +165,17 @@ SceneNode* movableObject::tryGetNode(){
 }
 
 
-
-
-
-    
+void movableObject::kill(){
+    dead = true;
+}
+ bool movableObject::isDead(){
+    return dead;
+}
+void movableObject::awake(){
+    dead = false;
+}
+ 
+bool movableObject::isOutOfArea(){
+  return (position.x > SPIELFELDBREITE || position.x < -1*SPIELFELDBREITE ||
+	  position.y > SPIELFELDBREITE || position.y < -1*SPIELFELDBREITE);
+}

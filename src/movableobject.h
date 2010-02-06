@@ -30,7 +30,7 @@ class movableObject : public notifyable
     // gibt den ersten hinzugefuegten SceneNode oder NULL zurueck
     SceneNode* tryGetNode();
     
-    
+    //zb fuer geschosse die sich permanent beschleunigen
     Vector2 constAcceleration;
     
     bool circle;
@@ -41,7 +41,16 @@ class movableObject : public notifyable
     float b;
     void setGravitationPartner(movableObject *mov);
     
+    // wenn tot dann kann er nicht mehr fliegen...
+    void kill();
+    bool isDead();
+    void awake();
+    bool isOutOfArea();
+    
   protected:
+    
+    bool dead;
+       
     movableObject * circlePoint;
     
     float phi;

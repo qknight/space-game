@@ -81,8 +81,33 @@ void Game::kollisionen() {
   for (it = this->lightObjects.begin(); it != this->lightObjects.end(); ++ it){
     if ((*it)->getPosition().length() < 190){
       movableObject *obj = (*it);
-      it = this->lightObjects.erase(it);
-      delete obj;
+      if (obj->getObjektName() == "Player"){
+	obj->kill();
+      } else {
+	it = this->lightObjects.erase(it);
+	delete obj;
+      }
+    }
+  }
+}
+
+void Game::removeOutOfAreaObjects(){
+  
+  list<movableObject*>::iterator it;
+  
+  for (it = this->lightObjects.begin(); it != this->lightObjects.end(); ++ it){
+    if ((*it)->isOutOfArea()){
+      if ((*it)->getObjektName() == "Player"){
+	//spieler an zufaellige position teleportieren.
+	(*it)->teleport(Vector2(rand()%(2*SPIELFELDBREITE) - SPIELFELDBREITE,rand()%(2*SPIELFELDBREITE) - SPIELFELDBREITE));	
+//	cout << "Objekt Teleportiert" << endl;
+      } else {
+	//objekt entfernen.
+	movableObject *obj = (*it);
+	it = this->lightObjects.erase(it);
+	delete obj;
+//	cout << "Objekt entfernt" << endl;
+      }
     }
   }
 }

@@ -15,7 +15,7 @@ class notifyable;
 class movObjChangedNotifier : public Notifier
 {
   public:
-    movObjChangedNotifier(SceneNode *node);
+    movObjChangedNotifier(SceneNode* node, SceneManager *scMr);
     //precondition: notifyable is from class movableObject
     void notify(notifyable* obj);
     void notifyDelet(notifyable* obj);
@@ -23,6 +23,7 @@ class movObjChangedNotifier : public Notifier
     SceneNode* getNode();
   protected:
     SceneNode *node;
+    SceneManager* scMr;
 };
 
 #endif // MOVOBJCHANGEDNOTIFIER_H

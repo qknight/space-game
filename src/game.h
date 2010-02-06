@@ -29,6 +29,9 @@ class Game
     //kollisionen
     void kollisionen();
     
+    //Spielfeld verlassen, dann entvernen....
+    void removeOutOfAreaObjects();
+    
     //precondition: hasNewObject() == true;
     //liefert das nächste neue Object
     //postcondition: make a new node with this object
