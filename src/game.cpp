@@ -99,7 +99,8 @@ void Game::removeOutOfAreaObjects(){
     if ((*it)->isOutOfArea()){
       if ((*it)->getObjektName() == "Player"){
 	//spieler an zufaellige position teleportieren.
-	(*it)->teleport(Vector2(rand()%(2*SPIELFELDBREITE) - SPIELFELDBREITE,rand()%(2*SPIELFELDBREITE) - SPIELFELDBREITE));	
+	(*it)->teleport(Vector2(rand()%(2*SPIELFELDBREITE) - SPIELFELDBREITE,rand()%(2*SPIELFELDBREITE) - SPIELFELDBREITE));
+	(*it)->setSpeed(Vector2(rand()%3, rand()%3));
 //	cout << "Objekt Teleportiert" << endl;
       } else {
 	//objekt entfernen.

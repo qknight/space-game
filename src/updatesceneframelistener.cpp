@@ -118,62 +118,44 @@ void UpdateSceneFrameListener::getNewObjects()
     std::stringstream str; 
     str<<NodesNum; 
     
-    
+    SceneNode *node = this->mSceneMgr->getRootSceneNode()->createChildSceneNode(str.str());
+    Entity *ent;
     if (objName == "Player"){
-//	mylogger::log("player "+ str.str());
-	SceneNode *nodePlayer = this->mSceneMgr->getRootSceneNode()->createChildSceneNode(str.str());
-	nodePlayer->pitch(Degree(90));
-	player->addNotifier(new movObjChangedNotifier(nodePlayer, mSceneMgr));
-	Entity *ship = mSceneMgr->createEntity("player"+str.str(),"razor.mesh");
-	nodePlayer->attachObject(ship);
-	nodePlayer->setPosition(Vector3(obj->getPosition().x,obj->getPosition().y,SPIELEBENE));
+	node->pitch(Degree(90));
+	player->addNotifier(new movObjChangedNotifier(node, mSceneMgr));
+	ent = mSceneMgr->createEntity("player"+str.str(),"razor.mesh");
     }else if (objName == "projectile"){
-//	mylogger::log("projectile "+ str.str());
-	
-	SceneNode *nodeProj = this->mSceneMgr->getRootSceneNode()->createChildSceneNode("ProjectieleNode" + str.str());
-	nodeProj->scale(Vector3(5,5,5));
-	nodeProj->pitch(Degree(90));
-	obj->addNotifier(new movObjChangedNotifier(nodeProj, mSceneMgr));
-	Entity *Proj = mSceneMgr->createEntity("projectile" + str.str(),"Barrel.mesh");
-	nodeProj->attachObject(Proj);
-	nodeProj->setPosition(Vector3(obj->getPosition().x,obj->getPosition().y,SPIELEBENE));
+	node->scale(Vector3(5,5,5));
+	//node->pitch(Degree(90));
+	obj->addNotifier(new movObjChangedNotifier(node, mSceneMgr));
+	ent = mSceneMgr->createEntity("projectile" + str.str(),"Barrel.mesh");
     }else if(objName == "Planet"){
-//	mylogger::log("Planet "+ str.str());
-	SceneNode *nodePlan = this->mSceneMgr->getRootSceneNode()->createChildSceneNode("PlanetNode" + str.str());
-	nodePlan->scale(Vector3(3,3,3));
-	obj->addNotifier(new movObjChangedNotifier(nodePlan, mSceneMgr));
-	Entity *Planet = mSceneMgr->createEntity("Planet" + str.str(),"sphere.mesh");
-	nodePlan->attachObject(Planet);
-	nodePlan->setPosition(Vector3(obj->getPosition().x,obj->getPosition().y,SPIELEBENE));
+	node->scale(Vector3(3,3,3));
+	obj->addNotifier(new movObjChangedNotifier(node, mSceneMgr));
+	ent = mSceneMgr->createEntity("Planet" + str.str(),"sphere.mesh");
     }else if(objName == "SUN"){
-//	mylogger::log("Planet "+ str.str());
-	SceneNode *nodeSUN = this->mSceneMgr->getRootSceneNode()->createChildSceneNode("SUNNode" + str.str());
-	nodeSUN->scale(Vector3(55,55,55));
-	obj->addNotifier(new movObjChangedNotifier(nodeSUN, mSceneMgr));
-	Entity *SUN = mSceneMgr->createEntity("SUN" + str.str(),"Abstrikes.mesh");
-	//SUN->
-	nodeSUN->attachObject(SUN);
-	nodeSUN->setPosition(Vector3(obj->getPosition().x,obj->getPosition().y,SPIELEBENE));
+	node->scale(Vector3(55,55,55));
+	obj->addNotifier(new movObjChangedNotifier(node, mSceneMgr));
+	ent = mSceneMgr->createEntity("SUN" + str.str(),"Abstrikes.mesh");
+	
+	Light* myLight = mSceneMgr->createLight("nameOfTheLight");
+	myLight->setType(Light::LT_POINT);
+	//myLight->setPosition(200, 300, 400);
+	myLight->setDiffuseColour(1, 0.5, 0.2);
+	myLight->setSpecularColour(1, 0.5, 0.2);
+	
+	node->attachObject(myLight);
+	
     }else if(objName == "Moon"){
-//	mylogger::log("Planet "+ str.str());
-  //initialisiert random seed
-  srand(111);
-	SceneNode *nodeMoon = this->mSceneMgr->getRootSceneNode()->createChildSceneNode("MoonNode" + str.str());
-//	nodeMoon->scale(1,1,1);
-	obj->addNotifier(new movObjChangedNotifier(nodeMoon, mSceneMgr));
-	Entity *moon = mSceneMgr->createEntity("Moon" + str.str(),"sphere.mesh");
-	nodeMoon->attachObject(moon);
-	nodeMoon->setPosition(Vector3(obj->getPosition().x,obj->getPosition().y,SPIELEBENE));
+	obj->addNotifier(new movObjChangedNotifier(node, mSceneMgr));
+	ent = mSceneMgr->createEntity("Moon" + str.str(),"sphere.mesh");
     }else if(objName == "Komet"){
-//	mylogger::log("Planet "+ str.str());
-	SceneNode *nodeKomet = this->mSceneMgr->getRootSceneNode()->createChildSceneNode("KometNode" + str.str());
-	nodeKomet->scale(0.281,0.41,0.8);
-	obj->addNotifier(new movObjChangedNotifier(nodeKomet, mSceneMgr));
-	Entity *komet = mSceneMgr->createEntity("Komet" + str.str(),"sphere.mesh");
-	nodeKomet->setPosition(Vector3(obj->getPosition().x,obj->getPosition().y,SPIELEBENE));
-	nodeKomet->attachObject(komet);
+	node->scale(0.281,0.41,0.8);
+	obj->addNotifier(new movObjChangedNotifier(node, mSceneMgr));
+	ent = mSceneMgr->createEntity("Komet" + str.str(),"sphere.mesh");
     }
-    
+    node->attachObject(ent);
+    node->setPosition(Vector3(obj->getPosition().x,obj->getPosition().y,SPIELEBENE));
     NodesNum++;
   }
 }
