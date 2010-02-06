@@ -167,7 +167,8 @@ void UpdateSceneFrameListener::getNewObjects()
 	nodeMoon->attachObject(moon);
 	nodeMoon->setPosition(Vector3(obj->getPosition().x,obj->getPosition().y,SPIELEBENE));
     }
-    
+    this->mSceneMgr->setSkyBox(true, "Examples/SpaceSkyBox");
+
     NodesNum++;
   }
 }
