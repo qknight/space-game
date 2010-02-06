@@ -230,10 +230,10 @@ bool UpdateSceneFrameListener::KeyInput()
   }
   //Zoom in der CAMTOPVIEW
   if(mKeyboard->isKeyDown(OIS::KC_PGUP)){
-    this->Zoom += 500;
+    this->Zoom += Zoom/10;
   }
-   if(mKeyboard->isKeyDown(OIS::KC_PGDOWN)){
-    this->Zoom -= 500;
+   if(mKeyboard->isKeyDown(OIS::KC_PGDOWN) && (Zoom > 50)){
+    this->Zoom -= Zoom/10;
   }
   
   
@@ -250,7 +250,7 @@ void UpdateSceneFrameListener::moveMyCamera(){
     case CAMTOPVIEW:{
 	int x = this->player->getPosition().x;
 	int y = this->player->getPosition().y;
-	this->mCamera->setPosition(Vector3(x, y, Zoom));
+	this->mCamera->setPosition(Vector3(x, y,SPIELEBENE + Zoom));
 	this->mCamera->lookAt(Vector3(x,y,SPIELEBENE));
       }
       break;
@@ -261,10 +261,10 @@ void UpdateSceneFrameListener::moveMyCamera(){
 	if (!locat.isZeroLength())
 	  locat.normalise();
 	
-	float sX = locat.x * 1500;
-	float sY = locat.y * 1500;
+	float sX = locat.x * 1500 + Zoom *locat.x/50;
+	float sY = locat.y * 1500 + Zoom *locat.y/50;
 	
-	this->mCamera->setPosition(Vector3(x - sX, y - sY,250 + Zoom/5));
+	this->mCamera->setPosition(Vector3(x - sX, y - sY,SPIELEBENE + Zoom));
 	this->mCamera->lookAt(Vector3(x + sX ,y +sY,SPIELEBENE));
 	this->mCamera->setNearClipDistance(5);
       }
