@@ -129,11 +129,14 @@ UpdateSceneFrameListener::UpdateSceneFrameListener(RenderWindow* win, Camera* ca
 // }
 
 
-bool UpdateSceneFrameListener::frameStarted(const FrameEvent &evt)
-{
+bool UpdateSceneFrameListener::frameStarted(const FrameEvent &evt) {
     if (this->player == NULL) {
         return false;
     }
+
+    // this is needed for timer stuff
+    player->reload(); // a weapon needs a few cycles to reload, if a player tries to shoot nothing happens
+    // no more timer stuff
 
     bool ret = this->KeyInput();
     this->JoyInput();
@@ -225,26 +228,97 @@ void UpdateSceneFrameListener::getNewObjects()
 }
 
 bool UpdateSceneFrameListener::JoyInput() {
+    bool boost;
     // This is needed in the even queue of SDL
     js.joyupdate();
 
     // now we query for some input
+    int k=0;
     for ( int i=0; i < SDL_JoystickNumButtons ( js.joy1 ); ++i ) {
         unsigned int n = SDL_JoystickGetButton ( js.joy1, i );
         if ( n != 0 )
-            printf ( "found you pressed button %i\n", i );
+            switch (i) {
+                // button 1,2,3,4 on the joypad are 0,1,2,3 internally
+            case 0:
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+
+                // button 4 and 6 are 'links hinten 1 and links hinten 2'
+            case 4:
+                this->Zoom += 50 + Zoom/30;
+                break;
+            case 6:
+                this->Zoom -= 50 + Zoom/30;
+                break;
+
+                // button 5 and 7 are 'rechts hinten 1 and rechts hinten 2'
+		// and they are used to shoot laser+projectiles
+            case 5:
+	       k = 5;
+            case 7: 
+	       k = 7; 
+	      {
+                Vector2 vec2;
+                for ( int i=0; i < SDL_JoystickNumAxes ( js.joy1 ); ++i ) {
+                    signed short a = SDL_JoystickGetAxis ( js.joy1, i );
+                    if ( a != 0 ) {
+                        if (i == 3)
+                            vec2.x += a/12700;
+                        if (i == 2)
+                            vec2.y -= a/12700;
+                    }
+                }
+                cout << vec2.x << " " << vec2.y << endl;
+                if (!vec2.isZeroLength()) {
+                    vec2.normalise();
+                    projectile * proj = new projectile(PROJECTIELESPEED,vec2, MUNITIONSHEAVINESS);
+                    proj->Damage = 4;
+                    player->fireWappon(proj);
+                }
+            }
+
+            break;
+
+            case 8: // select
+                break;
+            case 9: // start
+                if (player->isDead()) {
+                    this->player->teleport(Vector2(rand()%(2*SPIELFELDBREITE) - SPIELFELDBREITE,rand()%(2*SPIELFELDBREITE) - SPIELFELDBREITE));
+                    this->player->setSpeed(Vector2(rand()%3, rand()%3));
+                    this->player->awake();
+                }
+                break;
+
+            case 10: // left joystick pressed
+                boost = player->BoostAvaible();
+                break;
+            case 11: // right joystick pressed
+                break;
+
+            default:
+                break;
+            }
+
     }
     Vector2 vec;
 
     for ( int i=0; i < SDL_JoystickNumAxes ( js.joy1 ); ++i ) {
         signed short a = SDL_JoystickGetAxis ( js.joy1, i );
         if ( a != 0 ) {
-	  if (i == 0)
-	      vec.x += a/3270;
-	  if (i == 1)
-	    vec.y -= a/3270;
-	}
+            if (i == 0)
+                vec.x += a/12700;
+            if (i == 1)
+                vec.y -= a/12700;
+        }
     }
+    if (boost)
+        vec *= SPEEDBOOSTSTRENGTH;
+
     player->accelerate(vec);
     return true;
 }
@@ -279,12 +353,8 @@ bool UpdateSceneFrameListener::KeyInput()
         vec.normalise();
         projectile * proj = new projectile(PROJECTIELESPEED,vec, MUNITIONSHEAVINESS);
         proj->Damage = 4;
-        if (!player->fireWappon(proj))
-            player->reload();
-    } else {
-        player->reload();
+        player->fireWappon(proj);
     }
-
     //Lenken
     vec.x = 0;
     vec.y = 0;
@@ -308,7 +378,6 @@ bool UpdateSceneFrameListener::KeyInput()
             vec *=SPEEDBOOSTSTRENGTH;
     }
     player->accelerate(vec);
-
 
     //Cam Positionen
     if (mKeyboard->isKeyDown(OIS::KC_F1)) {
