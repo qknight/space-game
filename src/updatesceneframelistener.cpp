@@ -8,8 +8,9 @@ UpdateSceneFrameListener::UpdateSceneFrameListener(RenderWindow* win, Camera* ca
   CamPosition = CAMFOLLOW;
 //  CamPosition = 3;
   this->Zoom = 1500;
-  mMouse->capture();
+//   mMouse->capture();
   mKeyboard->capture();
+//   mJoy->capture();
   game = modle;
   player = new Player(game, PLAYERHEAVINESS);
   player->teleport(Vector2(-5500,5500));
@@ -110,20 +111,20 @@ UpdateSceneFrameListener::UpdateSceneFrameListener(RenderWindow* win, Camera* ca
 
 // Overriding the default processUnbufferedKeyInput so the key updates we define
 // later on work as intended.
-bool UpdateSceneFrameListener::processUnbufferedKeyInput(const Ogre::FrameEvent& evt)
-{
-//return ExampleFrameListener::processUnbufferedKeyInput(evt);
-  return true;
-}
+// bool UpdateSceneFrameListener::processUnbufferedKeyInput(const Ogre::FrameEvent& evt)
+// {
+// //return ExampleFrameListener::processUnbufferedKeyInput(evt);
+//   return true;
+// }
 
 
 // Overriding the default processUnbufferedMouseInput so the Mouse updates we define
 // later on work as intended. 
-bool UpdateSceneFrameListener::processUnbufferedMouseInput(const Ogre::FrameEvent& evt)
-{
-  return ExampleFrameListener::processUnbufferedMouseInput(evt);
-//  return true;
-}
+// bool UpdateSceneFrameListener::processUnbufferedMouseInput(const Ogre::FrameEvent& evt)
+// {
+//   return ExampleFrameListener::processUnbufferedMouseInput(evt);
+// //  return true;
+// }
 
 
 bool UpdateSceneFrameListener::frameStarted(const FrameEvent &evt)
@@ -133,6 +134,7 @@ bool UpdateSceneFrameListener::frameStarted(const FrameEvent &evt)
   }
   
   bool ret = this->KeyInput();
+  bool ret1 = this->JoyInput();
   this->getNewObjects(); 
     
   this->game->moveLightObjects();
@@ -217,6 +219,10 @@ void UpdateSceneFrameListener::getNewObjects()
     mSceneMgr->destroyQuery(intersectionQuery);
     this->intersectionQuery = mSceneMgr->createIntersectionQuery();
   }
+}
+
+bool UpdateSceneFrameListener::JoyInput() {
+  return true;
 }
 
 bool UpdateSceneFrameListener::KeyInput()
@@ -306,6 +312,7 @@ bool UpdateSceneFrameListener::KeyInput()
   }
   return true;
 }
+
 void UpdateSceneFrameListener::moveMyCamera(){
   switch (CamPosition){
     case CAMTOPVIEW:{
