@@ -1,2 +1,6 @@
 space-game
 build
+.kdev4/
+ogre.cfg
+plugins.cfg
+Ogre.log

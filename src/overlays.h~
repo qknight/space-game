@@ -1,8 +1,0 @@
-#ifndef OVERLAYS_H
-#define OVERLAYS_H
-
-class Overlays
-{
-};
-
-#endif // OVERLAYS_H
