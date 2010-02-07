@@ -203,7 +203,7 @@ void UpdateSceneFrameListener::getNewObjects()
 	obj->addNotifier(new movObjChangedNotifier(node, mSceneMgr));
 	ent = mSceneMgr->createEntity("Moon" + str.str(),"sphere.mesh");
     }else if(objName == "Komet"){
-	node->scale(0.281,0.41,0.8);
+	node->scale(0.4,0.4,0.4);
 	obj->addNotifier(new movObjChangedNotifier(node, mSceneMgr));
 	ent = mSceneMgr->createEntity("Komet" + str.str(),"sphere.mesh");
     }

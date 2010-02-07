@@ -92,7 +92,7 @@ public:
 		mCamera(cam), mTranslateVector(Vector3::ZERO), mCurrentSpeed(0), mWindow(win), mStatsOn(true), mNumScreenShots(0),
 		mMoveScale(0.0f), mRotScale(0.0f), mTimeUntilNextToggle(0), mFiltering(TFO_BILINEAR),
 		mAniso(1), mSceneDetailIndex(0), mMoveSpeed(100), mRotateSpeed(36), mDebugOverlay(0),
-		mInputManager(0), mMouse(0), mKeyboard(0), mJoy(0)
+		mInputManager(0), mKeyboard(0), mJoy(0)
 	{
 
 		mDebugOverlay = OverlayManager::getSingleton().getByName("Core/DebugOverlay");
@@ -110,7 +110,7 @@ public:
 
 		//Create all devices (We only catch joystick exceptions here, as, most people have Key/Mouse)
 		mKeyboard = static_cast<OIS::Keyboard*>(mInputManager->createInputObject( OIS::OISKeyboard, bufferedKeys ));
-		mMouse = static_cast<OIS::Mouse*>(mInputManager->createInputObject( OIS::OISMouse, bufferedMouse ));
+		//mMouse = static_cast<OIS::Mouse*>(mInputManager->createInputObject( OIS::OISMouse, bufferedMouse ));
 		try {
 			mJoy = static_cast<OIS::JoyStick*>(mInputManager->createInputObject( OIS::OISJoyStick, bufferedJoy ));
 		}
@@ -134,9 +134,9 @@ public:
 		int left, top;
 		rw->getMetrics(width, height, depth, left, top);
 
-		const OIS::MouseState &ms = mMouse->getMouseState();
-		ms.width = width;
-		ms.height = height;
+//		const OIS::MouseState &ms = mMouse->getMouseState();
+//		ms.width = width;
+//		ms.height = height;
 	}
 
 	//Unattach OIS before window shutdown (very important under Linux)
@@ -147,7 +147,7 @@ public:
 		{
 			if( mInputManager )
 			{
-				mInputManager->destroyInputObject( mMouse );
+//				mInputManager->destroyInputObject( mMouse );
 				mInputManager->destroyInputObject( mKeyboard );
 				mInputManager->destroyInputObject( mJoy );
 
@@ -315,7 +315,7 @@ public:
 
 		//Need to capture/update each device
 		mKeyboard->capture();
-		mMouse->capture();
+//		mMouse->capture();
 		if( mJoy ) mJoy->capture();
 
 		bool buffJ = (mJoy) ? mJoy->buffered() : true;
@@ -323,7 +323,7 @@ public:
     	Ogre::Vector3 lastMotion = mTranslateVector;
 
 		//Check if one of the devices is not buffered
-		if( !mMouse->buffered() || !mKeyboard->buffered() || !buffJ )
+		if(!mKeyboard->buffered() || !buffJ )
 		{
 			// one of the input modes is immediate, so setup what is needed for immediate movement
 			if (mTimeUntilNextToggle >= 0)
@@ -344,9 +344,9 @@ public:
 		if( !mKeyboard->buffered() )
 			if( processUnbufferedKeyInput(evt) == false )
 				return false;
-		if( !mMouse->buffered() )
-			if( processUnbufferedMouseInput(evt) == false )
-				return false;
+// 		if( !mMouse->buffered() )
+// 			if( processUnbufferedMouseInput(evt) == false )
+// 				return false;
 
 		// ramp up / ramp down speed
     	if (mTranslateVector == Ogre::Vector3::ZERO)
@@ -370,8 +370,8 @@ public:
 		mTranslateVector *= mCurrentSpeed;
 
 
-		if( !mMouse->buffered() || !mKeyboard->buffered() || !buffJ )
-			moveCamera();
+// 		if( !mMouse->buffered() || !mKeyboard->buffered() || !buffJ )
+// 			moveCamera();
 
 		return true;
 	}
@@ -409,7 +409,7 @@ protected:
 
 	//OIS Input devices
 	OIS::InputManager* mInputManager;
-	OIS::Mouse*    mMouse;
+	//OIS::Mouse*    mMouse;
 	OIS::Keyboard* mKeyboard;
 	OIS::JoyStick* mJoy;
 };
