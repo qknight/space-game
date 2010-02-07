@@ -13,10 +13,11 @@ INCLUDE_DIRECTORIES(
   "/usr/include/OIS/"
   "/home/billy/ogre/ogre/Samples/Common/include"
   "/home/billy/ogre/ogre/OgreMain/include"
+  "/usr/include/SDL"
   #"/home/billy/projects/hihi/src"
 )
 
-ADD_EXECUTABLE(space-game
+ADD_EXECUTABLE(space-game 
   src/game.cpp
   src/main.cpp
   src/movableobject.cpp
@@ -28,6 +29,7 @@ ADD_EXECUTABLE(space-game
   src/spacecontroller.cpp
   src/spaceview.cpp
   src/updatesceneframelistener.cpp
+  src/joystick.cpp
 )
 
-TARGET_LINK_LIBRARIES( space-game "-lOIS -lOgreMain" )
+TARGET_LINK_LIBRARIES( space-game "-lOIS -lOgreMain -lSDL -lpthread" )

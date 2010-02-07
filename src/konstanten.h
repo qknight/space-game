@@ -17,7 +17,7 @@ static const float SUNHEAVINESS =   70000000000000;
 static const float PI = 3.14159265358979323846264338327950288419716939937510;
 
 
-static const int SPIELFELDBREITE = 35000;
+static const int SPIELFELDBREITE = 95000;
 
 
 #endif

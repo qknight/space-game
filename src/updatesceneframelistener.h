@@ -1,5 +1,6 @@
 #ifndef UPDATESCENEFRAMELISTENER_H
 #define UPDATESCENEFRAMELISTENER_H
+#include "SDL.h"
 #include "ExampleApplication.h"
 #include "Ogre.h"
 #include "game.h"
@@ -8,6 +9,8 @@
 #include "movobjchangednotifier.h"
 #include "OgreSceneNode.h"
 #include "movableobject.h"
+#include "joystick.h"
+
 using namespace Ogre;
 
 class UpdateSceneFrameListener : public ExampleFrameListener
@@ -25,6 +28,7 @@ public:
 
     bool frameStarted(const FrameEvent &evt);
 private:
+    joystick js;
     void Kolisionen();
     bool JoyInput();
     void moveMyCamera();
