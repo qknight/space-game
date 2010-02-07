@@ -3,14 +3,17 @@
 #include "konstanten.h"
 #include <OgreTextAreaOverlayElement.h>
 
-UpdateSceneFrameListener::UpdateSceneFrameListener(RenderWindow* win, Camera* cam, SceneManager* sceneMgr, Game* modle): ExampleFrameListener(win, cam, false,false)
+UpdateSceneFrameListener::UpdateSceneFsrameListener(RenderWindow* win, Camera* cam, SceneManager* sceneMgr, Game* modle): ExampleFrameListener(win, cam, false,false)
 {
   CamPosition = CAMFOLLOW;
 //  CamPosition = 3;
   this->Zoom = 1500;
 //   mMouse->capture();
   mKeyboard->capture();
-//   mJoy->capture();
+  if (mJoy){
+    mJoy->capture();
+    cout << "Hurray!!!" << endl;
+  }
   game = modle;
   player = new Player(game, PLAYERHEAVINESS);
   player->teleport(Vector2(-5500,5500));
@@ -34,6 +37,7 @@ UpdateSceneFrameListener::UpdateSceneFrameListener(RenderWindow* win, Camera* ca
   panel->setMetricsMode(Ogre::GMM_PIXELS);
   panel->setPosition(10, 10);
   panel->setDimensions(500, 10);
+//  MaterialManager *mMaterialManager = new MaterialManager();
  // panel->setMaterialName("Scene.material");
   // Create a text area
 /*  TextAreaOverlayElement* textArea = static_cast<TextAreaOverlayElement*>(
@@ -223,6 +227,7 @@ void UpdateSceneFrameListener::getNewObjects()
 }
 
 bool UpdateSceneFrameListener::JoyInput() {
+  
   return true;
 }
 
@@ -296,6 +301,7 @@ bool UpdateSceneFrameListener::KeyInput()
     
     this->mCamera->roll(Radian(90));
   }
+  
   //Zoom in der CAMTOPVIEW
   if(mKeyboard->isKeyDown(OIS::KC_PGUP)){
     this->Zoom += 50 + Zoom/30;
