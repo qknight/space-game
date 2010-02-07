@@ -62,8 +62,8 @@ UpdateSceneFrameListener::UpdateSceneFrameListener(RenderWindow* win, Camera* ca
   if (this->mCamNode = NULL)
     cout << "PLAYER NODE NICHT GESETZT!";
     
-  
-  
+ // http://www.ogre3d.org/wiki/index.php/Tutorial_5
+ this->mSceneMgr->setSkyBox(true, "Examples/SpaceSkyBox"); 
 }
 
 // Overriding the default processUnbufferedKeyInput so the key updates we define
@@ -167,7 +167,7 @@ void UpdateSceneFrameListener::getNewObjects()
 	nodeMoon->attachObject(moon);
 	nodeMoon->setPosition(Vector3(obj->getPosition().x,obj->getPosition().y,SPIELEBENE));
     }
-    this->mSceneMgr->setSkyBox(true, "Examples/SpaceSkyBox");
+    
 
     NodesNum++;
   }
