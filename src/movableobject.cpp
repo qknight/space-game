@@ -16,6 +16,8 @@ movableObject::movableObject(String ObjectName, float heaviness)
   this->acceleration.x = 0;
   this->acceleration.y = 0;
   
+  Damage = 2147483647;
+  
   a = 1;
   b = 1;
   this->circle = false;
@@ -25,7 +27,6 @@ movableObject::movableObject(String ObjectName, float heaviness)
   
   this->heaviness = heaviness;
   
-  dead = false;
 }
 
 movableObject::~movableObject()
@@ -81,33 +82,33 @@ void movableObject::accelerate(Vector2 acceleration){
 
 //ändert die Geschwindigkeit anhand der Anziehung eines anderen Körpers
 void movableObject::calculateGravity(movableObject *gravity){
-  
-  //Gravitationskonstante in der Realität ist sie 6,67428*10^-11
-  //da hier in tonnen gerechnet wird nur 10^-9
-  const double G = 0.000000067428;
-  
-  //abstand der beiden Körper im quadrat
-  double r = (position.x - gravity->getPosition().x)*(position.x - gravity->getPosition().x) +
-	     (position.y - gravity->getPosition().y)*(position.y - gravity->getPosition().y);
-  
-  //die Kraft die auf die Körper einwirkt.
-  double dF = (G * gravity->getHeaviness() * this->heaviness)/r;
-  //die Richtung der Kraft als Vector
-  Vector2 vF = gravity->position - this->position;
-  //Die kraft bekommt die richtige länge
-  if (vF.isZeroLength()){
-    //hohe gravitation
-   //vF *= 1000;
-  }else{
-    double l = dF/vF.length();
-    vF.x *= l;
-    vF.y *= l;
+    //Gravitationskonstante in der Realität ist sie 6,67428*10^-11
+    //da hier in tonnen gerechnet wird nur 10^-9
+    const double G = 0.000000067428;
     
-    //die Beschleunigung die dieses Objekt erfährt
-    Vector2 a = vF / this->heaviness;
+    //abstand der beiden Körper im quadrat
+    double r = (position.x - gravity->getPosition().x)*(position.x - gravity->getPosition().x) +
+	      (position.y - gravity->getPosition().y)*(position.y - gravity->getPosition().y);
     
-    //beschleunigt das Objekt.
-    this->speed += a;
+    //die Kraft die auf die Körper einwirkt.
+    double dF = (G * gravity->getHeaviness() * this->heaviness)/r;
+    //die Richtung der Kraft als Vector
+    Vector2 vF = gravity->position - this->position;
+    //Die kraft bekommt die richtige länge
+    if (vF.isZeroLength()){
+      //hohe gravitation
+    //vF *= 1000;
+    }else{
+      double l = dF/vF.length();
+      vF.x *= l;
+      vF.y *= l;
+      
+      //die Beschleunigung die dieses Objekt erfährt
+      Vector2 a = vF / this->heaviness;
+      
+      //beschleunigt das Objekt.
+      this->speed += a;
+    
   }  
 /*
 //der selbe code nur dass die eigene Masse herrausgekürtzt wurde.
@@ -164,17 +165,6 @@ SceneNode* movableObject::tryGetNode(){
   return NULL;
 }
 
-
-void movableObject::kill(){
-    dead = true;
-}
- bool movableObject::isDead(){
-    return dead;
-}
-void movableObject::awake(){
-    dead = false;
-}
- 
 bool movableObject::isOutOfArea(){
   return (position.x > SPIELFELDBREITE || position.x < -1*SPIELFELDBREITE ||
 	  position.y > SPIELFELDBREITE || position.y < -1*SPIELFELDBREITE);

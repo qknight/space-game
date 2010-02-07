@@ -18,7 +18,18 @@ class Player : public movableObject
     Ogre::String getObjektName();
 //    int getNumber();
     bool BoostAvaible();
+    void takeDamage(int arg1);
+    
+        
+    // wenn tot dann kann er nicht mehr fliegen...
+    void kill();
+    bool isDead();
+    void awake();
+    
+    void move();
   protected:
+    
+    
     bool boost;
     
     static const float MAXENERGY = 66;

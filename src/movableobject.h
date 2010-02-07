@@ -41,16 +41,13 @@ class movableObject : public notifyable
     float b;
     void setGravitationPartner(movableObject *mov);
     
-    // wenn tot dann kann er nicht mehr fliegen...
-    void kill();
-    bool isDead();
-    void awake();
     bool isOutOfArea();
     
-  protected:
+    int Damage;
     
     bool dead;
-       
+  protected:
+           
     movableObject * circlePoint;
     
     float phi;

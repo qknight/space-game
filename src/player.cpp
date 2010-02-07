@@ -48,8 +48,43 @@ Player::Player(Game *game,float heaviness):movableObject("Player", heaviness)
   //num++;
 }
 
-/*
+void Player::takeDamage(int arg1){
+    this->shild -= arg1;
+  //cout  <<"s: " << shild << endl;
+    if (shild < 0){
+      
+	this->life += shild;
+	shild = 0;
+	//cout <<"l: "<< life << endl;
+	if (this->life <=0){
+	  this->kill();
+	  
+	}
+    }
+}
 
+void Player::move(){
+  if(!dead)
+    movableObject::move();
+}
+
+void Player::kill(){
+    dead = true;
+    this->speed = 0;
+    this->acceleration = 0;
+    //cout << "KILL!!!";
+}
+ bool Player::isDead(){
+    return dead;
+}
+void Player::awake(){
+    dead = false;  
+  life = INITIALLIVE;
+  shild = INITIALSHILD;
+  wappon = INITIALWAPPON;
+  this->speed = 0;
+}
+/* 
 int Player::getNumber()
 {
   return num;

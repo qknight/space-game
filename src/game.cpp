@@ -56,21 +56,31 @@ void Game::moveLightObjects(){
 
 void Game::kollision(movableObject* arg1, movableObject* arg2){
   
-    if (!arg1->isDead() || arg2->isDead()){
+//    if (!arg1->isDead() || arg2->isDead()){
       if (arg1->getObjektName() == "Player" && arg2->getObjektName() == "Player"){
-	arg1->kill();
-	arg2->kill();
+	Player *pl1 = (Player*)arg1;
+	Player *pl2 = (Player*)arg2;
+	if (!pl1->isDead() && !pl2->isDead()){
+	  pl1->kill();
+	  pl2->kill();
+	}
       } else if (arg1->getObjektName() == "Player"){
-	//TODO Player Schaden
-	if (arg2 ->getObjektName() == "projectile"){
-	  this->lightObjects.remove(arg2);
-	  delete arg2;
+	Player *pl1 = (Player*)arg1;
+	if (!pl1->isDead()){
+	  pl1->takeDamage(arg2->Damage);
+	  if (arg2 ->getObjektName() == "projectile"){
+	    this->lightObjects.remove(arg2);
+	    delete arg2;
+	  }
 	}
       } else if (arg2->getObjektName() == "Player"){
-	//TODO Player Schaden
-	if (arg1 ->getObjektName() == "projectile"){
-	  this->lightObjects.remove(arg1);
-	  delete arg1;
+	Player *pl1 = (Player*)arg2;
+	if (!pl1->isDead()){
+	  pl1->takeDamage(arg2->Damage);
+	  if (arg1 ->getObjektName() == "projectile"){
+	    this->lightObjects.remove(arg1);
+	    delete arg1;
+	  }
 	}
       } else {
 	if (arg1 ->getObjektName() == "projectile"){
@@ -82,7 +92,7 @@ void Game::kollision(movableObject* arg1, movableObject* arg2){
 	  delete arg2;
 	}
       }
-    }
+ //   }
 }
 //bewegt alle schweren Objekte inklusive ihrer gravitation (gravitation wird nur von schweren objekten ausgelöst)
 void Game::moveHeavyObjects(){

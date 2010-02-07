@@ -208,6 +208,7 @@ bool UpdateSceneFrameListener::KeyInput()
   if (!vec.isZeroLength()){
     vec.normalise();
     projectile * proj = new projectile(PROJECTIELESPEED,vec, MUNITIONSHEAVINESS);
+    proj->Damage = 4;
     if (!player->fireWappon(proj))
       player->reload();
   }else{
