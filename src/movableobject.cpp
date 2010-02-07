@@ -84,7 +84,7 @@ void movableObject::accelerate(Vector2 acceleration){
 void movableObject::calculateGravity(movableObject *gravity){
     //Gravitationskonstante in der Realität ist sie 6,67428*10^-11
     //da hier in tonnen gerechnet wird nur 10^-9
-    const double G = 0.000000067428;
+    const double G = 0.00000067428;
     
     //abstand der beiden Körper im quadrat
     double r = (position.x - gravity->getPosition().x)*(position.x - gravity->getPosition().x) +
