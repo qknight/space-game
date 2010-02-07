@@ -103,8 +103,9 @@ UpdateSceneFrameListener::UpdateSceneFrameListener(RenderWindow* win, Camera* ca
   if (this->mCamNode = NULL)
     cout << "PLAYER NODE NICHT GESETZT!";
     
-  
-    this->intersectionQuery = mSceneMgr->createIntersectionQuery();
+ // http://www.ogre3d.org/wiki/index.php/Tutorial_5
+ this->mSceneMgr->setSkyBox(true, "Examples/SpaceSkyBox"); 
+ this->intersectionQuery = mSceneMgr->createIntersectionQuery();
 }
 
 // Overriding the default processUnbufferedKeyInput so the key updates we define
