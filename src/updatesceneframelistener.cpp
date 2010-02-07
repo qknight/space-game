@@ -173,9 +173,10 @@ void UpdateSceneFrameListener::getNewObjects()
     SceneNode *node = this->mSceneMgr->getRootSceneNode()->createChildSceneNode(str.str());
     Entity *ent;
     if (objName == "Player"){
-	node->pitch(Degree(90));
+	//node->pitch(Degree(90));
+	node->scale(3,3,3);
 	player->addNotifier(new movObjChangedNotifier(node, mSceneMgr));
-	ent = mSceneMgr->createEntity("player"+str.str(),"razor.mesh");
+	ent = mSceneMgr->createEntity("player"+str.str(),"Abstrikes.mesh");
     }else if (objName == "projectile"){
 	node->scale(Vector3(5,5,5));
 	obj->addNotifier(new movObjChangedNotifier(node, mSceneMgr));
@@ -185,9 +186,9 @@ void UpdateSceneFrameListener::getNewObjects()
 	obj->addNotifier(new movObjChangedNotifier(node, mSceneMgr));
 	ent = mSceneMgr->createEntity("Planet" + str.str(),"sphere.mesh");
     }else if(objName == "SUN"){
-	node->scale(Vector3(55,55,55));
+	node->scale(Vector3(15,15,15));
 	obj->addNotifier(new movObjChangedNotifier(node, mSceneMgr));
-	ent = mSceneMgr->createEntity("SUN" + str.str(),"Abstrikes.mesh");
+	ent = mSceneMgr->createEntity("SUN" + str.str(),"sphere.mesh");
 	
 	Light* myLight = mSceneMgr->createLight("nameOfTheLight");
 	myLight->setType(Light::LT_POINT);
