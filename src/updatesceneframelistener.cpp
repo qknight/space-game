@@ -36,8 +36,7 @@ UpdateSceneFrameListener::UpdateSceneFrameListener(RenderWindow* win, Camera* ca
   panel->setMetricsMode(Ogre::GMM_PIXELS);
   panel->setPosition(10, 10);
   panel->setDimensions(500, 10);
-//  MaterialManager *mMaterialManager = new MaterialManager();
- // panel->setMaterialName("Scene.material");
+  panel->setMaterialName("Hud/Energie");
   // Create a text area
 /*  TextAreaOverlayElement* textArea = static_cast<TextAreaOverlayElement*>(
       overlayManager.createOverlayElement("TextArea", "TextAreaName"));
