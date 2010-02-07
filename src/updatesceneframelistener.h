@@ -17,16 +17,17 @@ public:
 
     // Overriding the default processUnbufferedKeyInput so the key updates we define
     // later on work as intended.
-    bool processUnbufferedKeyInput(const FrameEvent& evt);
+//     bool processUnbufferedKeyInput(const FrameEvent& evt);
 
     // Overriding the default processUnbufferedMouseInput so the Mouse updates we define
     // later on work as intended.
-    bool processUnbufferedMouseInput(const FrameEvent& evt);
+//     bool processUnbufferedMouseInput(const FrameEvent& evt);
 
     bool frameStarted(const FrameEvent &evt);
-    void moveMyCamera();
+private:
     void Kolisionen();
-
+    bool JoyInput();
+    void moveMyCamera();
 protected:
     Game *game;
     Player *player;
@@ -39,14 +40,14 @@ protected:
     int NodesNum;
 
     void getNewObjects();
-    
+
     //Verschiedene Kammerapositionen.
     static const int CAMTOPVIEW = 0;
     static const int CAMFOLLOW = 1;
     int CamPosition;
-    
+
     float Zoom;
-    
+
     // kollisionen
     IntersectionSceneQuery* intersectionQuery;
 };
