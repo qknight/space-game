@@ -27,7 +27,7 @@ class Game
     bool hasNewObject();
     
     //kollisionen
-    void kollisionen();
+   // void kollisionen();
     
     //Spielfeld verlassen, dann entvernen....
     void removeOutOfAreaObjects();
@@ -36,6 +36,8 @@ class Game
     //liefert das nächste neue Object
     //postcondition: make a new node with this object
     movableObject* getNextNewObject();
+    
+    void kollision(movableObject* arg1, movableObject* arg2);
     
   protected:   
     //Leichte Objekte auf die Gravitation einwirkt

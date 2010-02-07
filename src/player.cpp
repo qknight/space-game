@@ -3,10 +3,10 @@
 
 bool Player::fireWappon(projectile* obj)
 {
-  if(firedWappon < 1){
-    firedWappon =WAPPONREALOADTIME;
+  if(firedWappon < 1 && !this->isDead()){
+    firedWappon = WAPPONREALOADTIME;
     obj->setSpeed(obj->getSpeed() + this->speed);
-    obj->teleport(this->getPosition()/* + obj->getSpeed().normalise()*this->wapponStartPosition*/);   
+    obj->teleport(this->getPosition() + obj->getSpeed().normalisedCopy()*this->wapponStartPosition);   
     this->game->addLightObject(obj);
     return true;
   }
@@ -41,13 +41,13 @@ Player::Player(Game *game,float heaviness):movableObject("Player", heaviness)
   firedWappon = 0;
   boost = true;
   boostAvaible = SPEEDBOOST;
+  
+//  wapponStartPosition = 50;
+  
+  this->ObjectName = "Player";
   //num++;
 }
 
-Ogre::String Player::getObjektName()
-{
-  return "Player";
-}
 /*
 
 int Player::getNumber()

@@ -25,6 +25,7 @@ public:
 
     bool frameStarted(const FrameEvent &evt);
     void moveMyCamera();
+    void Kolisionen();
 
 protected:
     Game *game;
@@ -45,6 +46,9 @@ protected:
     int CamPosition;
     
     float Zoom;
+    
+    // kollisionen
+    IntersectionSceneQuery* intersectionQuery;
 };
 
 #endif // UPDATESCENEFRAMELISTENER_H

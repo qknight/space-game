@@ -51,9 +51,39 @@ void Game::moveLightObjects(){
     (*itl)->move();
   //  mylogger::log((*itl)->getObjektName() + " wurde als leichtes Objekt bewegt");
   }
-  kollisionen();
+  //kollisionen();
 }
 
+void Game::kollision(movableObject* arg1, movableObject* arg2){
+  
+    if (!arg1->isDead() || arg2->isDead()){
+      if (arg1->getObjektName() == "Player" && arg2->getObjektName() == "Player"){
+	arg1->kill();
+	arg2->kill();
+      } else if (arg1->getObjektName() == "Player"){
+	//TODO Player Schaden
+	if (arg2 ->getObjektName() == "projectile"){
+	  this->lightObjects.remove(arg2);
+	  delete arg2;
+	}
+      } else if (arg2->getObjektName() == "Player"){
+	//TODO Player Schaden
+	if (arg1 ->getObjektName() == "projectile"){
+	  this->lightObjects.remove(arg1);
+	  delete arg1;
+	}
+      } else {
+	if (arg1 ->getObjektName() == "projectile"){
+	  this->lightObjects.remove(arg1);
+	  delete arg1;
+	}
+	if (arg2 ->getObjektName() == "projectile"){
+	  this->lightObjects.remove(arg2);
+	  delete arg2;
+	}
+      }
+    }
+}
 //bewegt alle schweren Objekte inklusive ihrer gravitation (gravitation wird nur von schweren objekten ausgelöst)
 void Game::moveHeavyObjects(){
   list<movableObject*>::iterator ith;
@@ -76,6 +106,7 @@ void Game::moveHeavyObjects(){
 }
 
 //TODO Bisher: DUMMYFUNKTION DIE NUR OBJEKTE IM MITTELPUNT ENTFERNT!!
+/*
 void Game::kollisionen() {  
   list<movableObject*>::iterator it;
   for (it = this->lightObjects.begin(); it != this->lightObjects.end(); ++ it){
@@ -90,6 +121,7 @@ void Game::kollisionen() {
     }
   }
 }
+*/
 
 void Game::removeOutOfAreaObjects(){
   

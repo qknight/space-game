@@ -6,7 +6,7 @@ UpdateSceneFrameListener::UpdateSceneFrameListener(RenderWindow* win, Camera* ca
 {
   CamPosition = CAMFOLLOW;
 //  CamPosition = 3;
-  this->Zoom = 500;
+  this->Zoom = 1500;
   mMouse->capture();
   mKeyboard->capture();
   game = modle;
@@ -65,7 +65,7 @@ UpdateSceneFrameListener::UpdateSceneFrameListener(RenderWindow* win, Camera* ca
     cout << "PLAYER NODE NICHT GESETZT!";
     
   
-  
+    this->intersectionQuery = mSceneMgr->createIntersectionQuery();
 }
 
 // Overriding the default processUnbufferedKeyInput so the key updates we define
@@ -98,6 +98,7 @@ bool UpdateSceneFrameListener::frameStarted(const FrameEvent &evt)
   this->game->moveLightObjects();
   this->game->moveHeavyObjects();
   this->game->removeOutOfAreaObjects();
+  this->Kolisionen();
   
   this->moveCamera();
   this->moveMyCamera();
@@ -107,9 +108,20 @@ bool UpdateSceneFrameListener::frameStarted(const FrameEvent &evt)
   }
   return ret;
 }
+void UpdateSceneFrameListener::Kolisionen(){
+  IntersectionSceneQueryResult& queryResult = intersectionQuery->execute();
+ 
+  for (list<SceneQueryMovableObjectPair>::iterator it = queryResult.movables2movables.begin();it != queryResult.movables2movables.end(); ++it){
+    movableObject * first = Ogre::any_cast<movableObject*>((*it).first->getUserAny());
+    movableObject * second = Ogre::any_cast<movableObject*>((*it).second->getUserAny());
+    
+    game->kollision(first, second);
+  }
+}
 
 void UpdateSceneFrameListener::getNewObjects()
 {
+  int NodesNumOld = NodesNum;
   while (this->game->hasNewObject()){
     movableObject *obj = game->getNextNewObject();
     String objName = obj->getObjektName();
@@ -153,9 +165,17 @@ void UpdateSceneFrameListener::getNewObjects()
 	obj->addNotifier(new movObjChangedNotifier(node, mSceneMgr));
 	ent = mSceneMgr->createEntity("Komet" + str.str(),"sphere.mesh");
     }
+    
+    ent->setUserAny(Any(obj));
+    
     node->attachObject(ent);
     node->setPosition(Vector3(obj->getPosition().x,obj->getPosition().y,SPIELEBENE));
+    
     NodesNum++;
+  }
+  if (NodesNumOld > NodesNum){
+    mSceneMgr->destroyQuery(intersectionQuery);
+    this->intersectionQuery = mSceneMgr->createIntersectionQuery();
   }
 }
 
@@ -230,10 +250,10 @@ bool UpdateSceneFrameListener::KeyInput()
   }
   //Zoom in der CAMTOPVIEW
   if(mKeyboard->isKeyDown(OIS::KC_PGUP)){
-    this->Zoom += Zoom/10;
+    this->Zoom += 50 + Zoom/30;
   }
    if(mKeyboard->isKeyDown(OIS::KC_PGDOWN) && (Zoom > 50)){
-    this->Zoom -= Zoom/10;
+    this->Zoom -= 50 + Zoom/30;
   }
   
   
