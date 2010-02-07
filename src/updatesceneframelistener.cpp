@@ -1,6 +1,7 @@
 #include "updatesceneframelistener.h"
 #include "mylogger.h"
 #include "konstanten.h"
+#include <OgreTextAreaOverlayElement.h>
 
 UpdateSceneFrameListener::UpdateSceneFrameListener(RenderWindow* win, Camera* cam, SceneManager* sceneMgr, Game* modle): ExampleFrameListener(win, cam, false,false)
 {
@@ -20,7 +21,44 @@ UpdateSceneFrameListener::UpdateSceneFrameListener(RenderWindow* win, Camera* ca
 //     mCamNode = player->tryGetNode();
 //     mCamNode->attachObject(cam);
 //   }
-    
+  
+  //this->
+  
+  ////////////////////////////TESTING//////////////////////////////
+  OverlayManager& overlayManager = OverlayManager::getSingleton();
+
+  // Create a panel
+  OverlayContainer* panel = static_cast<OverlayContainer*>(
+      overlayManager.createOverlayElement("Panel", "PanelName"));
+  panel->setMetricsMode(Ogre::GMM_PIXELS);
+  panel->setPosition(10, 10);
+  panel->setDimensions(500, 10);
+ // panel->setMaterialName("Scene.material");
+  // Create a text area
+/*  TextAreaOverlayElement* textArea = static_cast<TextAreaOverlayElement*>(
+      overlayManager.createOverlayElement("TextArea", "TextAreaName"));
+  textArea->setMetricsMode(Ogre::GMM_PIXELS);
+  textArea->setPosition(0, 0);
+  textArea->setDimensions(100, 100);
+  textArea->setCaption("Hello, World!");
+  textArea->setCharHeight(16);
+  textArea->setFontName("TrebuchetMSBold");
+  textArea->setColourBottom(ColourValue(0.3, 0.5, 0.3));
+  textArea->setColourTop(ColourValue(0.5, 0.7, 0.5));
+
+*/
+  
+    // Create an overlay, and add the panel
+  Overlay* overlay = overlayManager.create("OverlayName");
+  overlay->add2D(panel);
+// Add the text area to the panel
+//panel->addChild(textArea);
+
+  
+  // Show the overlay
+  overlay->show();
+  ////////////////////////////STOPTESTING//////////////////////////////
+  
   this->showDebugOverlay(false);
   
   movableObject *Sun = new movableObject("SUN", SUNHEAVINESS);
@@ -32,6 +70,7 @@ UpdateSceneFrameListener::UpdateSceneFrameListener(RenderWindow* win, Camera* ca
   Planet->setCircleRadius(6500);
   Planet->setGravitationPartner(Sun);
   
+
   Planet->circlespeed = 0.009;
   
   game->addHeavyObject(Planet);
