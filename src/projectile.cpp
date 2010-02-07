@@ -14,16 +14,15 @@ projectile::projectile(float speedboost, Ogre::Vector2 acceleration, float heavi
   acceleration.normalise();
   acceleration *= speedboost;
   this->speed += acceleration;
+  
+  this->ObjectName = "projectile";
 }
 /*
 static Ogre::String projectile::getObjektName(){
   return "projectile";
 }*/
 
-Ogre::String projectile::getObjektName()
-{
-  return "projectile";
-}
+
 
 int projectile::getNumber()
 {

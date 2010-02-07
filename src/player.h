@@ -18,7 +18,20 @@ class Player : public movableObject
     Ogre::String getObjektName();
 //    int getNumber();
     bool BoostAvaible();
+    void takeDamage(int arg1);
+    
+        
+    // wenn tot dann kann er nicht mehr fliegen...
+    void kill();
+    bool isDead();
+    void awake();
+    
+    void move();
   protected:
+    
+    
+    bool boost;
+    
     static const float MAXENERGY = 66;
     static const float INITIALLIVE = 100;
     static const float INITIALSHILD = 33;
@@ -31,7 +44,7 @@ class Player : public movableObject
     
     float boostAvaible;
     
-    static const float wapponStartPosition = 10;//die länge die die die Munition vor dem eigenen Schiff startet.
+    static const float wapponStartPosition = 150;//die länge die die die Munition vor dem eigenen Schiff startet.
     Game *game;
     int firedWappon;
     
