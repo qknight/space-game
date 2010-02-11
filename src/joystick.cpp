@@ -42,7 +42,7 @@ joystick::joystick () {
 
 	if ( joy1 == NULL ) {
 		printf ( "SDL backend: could not open joystick\n" );
-		exit(1);
+// 		exit(1);
 	}
 
 	printf ( "%i achsen\n", SDL_JoystickNumAxes ( joy1 ) );

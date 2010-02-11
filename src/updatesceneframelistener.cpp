@@ -73,10 +73,7 @@ UpdateSceneFrameListener::UpdateSceneFrameListener(RenderWindow* win, Camera* ca
     Planet->circle = true;
     Planet->setCircleRadius(6500);
     Planet->setGravitationPartner(Sun);
-
-
     Planet->circlespeed = 0.009;
-
     game->addHeavyObject(Planet);
 
     movableObject *Moon = new movableObject("Moon", 1500000000000);
@@ -110,6 +107,9 @@ UpdateSceneFrameListener::UpdateSceneFrameListener(RenderWindow* win, Camera* ca
 // http://www.ogre3d.org/wiki/index.php/Tutorial_5
     this->mSceneMgr->setSkyBox(true, "Examples/SpaceSkyBox");
     this->intersectionQuery = mSceneMgr->createIntersectionQuery();
+    
+    
+
 }
 
 // Overriding the default processUnbufferedKeyInput so the key updates we define
@@ -197,15 +197,20 @@ void UpdateSceneFrameListener::getNewObjects()
             node->scale(Vector3(15,15,15));
             obj->addNotifier(new movObjChangedNotifier(node, mSceneMgr));
             ent = mSceneMgr->createEntity("SUN" + str.str(),"sphere.mesh");
-
+	    ent->setMaterialName("space-game/myMoon");
             Light* myLight = mSceneMgr->createLight("nameOfTheLight");
             myLight->setType(Light::LT_POINT);
             //myLight->setPosition(200, 300, 400);
             myLight->setDiffuseColour(1, 0.5, 0.2);
             myLight->setSpecularColour(1, 0.5, 0.2);
-
             node->attachObject(myLight);
-
+	    
+// 	    Vector4 vColour = Vector4(12, 23, 23, 122);
+// 	    Vector4 vRadius  = Vector4(500,0,0,0);
+// 	    node->setCustomParameter(0,vColour);
+// 	    node->setCustomParameter(1,vRadius);
+//             ent->setMaterialName("shader/gradient");
+	    
         } else if (objName == "Moon") {
             obj->addNotifier(new movObjChangedNotifier(node, mSceneMgr));
             ent = mSceneMgr->createEntity("Moon" + str.str(),"sphere.mesh");
@@ -274,7 +279,7 @@ bool UpdateSceneFrameListener::JoyInput() {
                             vec2.y -= a/12700;
                     }
                 }
-                cout << vec2.x << " " << vec2.y << endl;
+//                 cout << vec2.x << " " << vec2.y << endl;
                 if (!vec2.isZeroLength()) {
                     vec2.normalise();
                     projectile * proj = new projectile(PROJECTIELESPEED,vec2, MUNITIONSHEAVINESS);
