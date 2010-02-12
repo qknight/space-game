@@ -90,4 +90,13 @@ int Player::getNumber()
   return num;
 }
 */
+float Player::getLife(){
+  return life;
+}
+float Player::getShild(){
+  return shild;
+}
+float Player::getWappon(){
+  return wappon;
+}
 

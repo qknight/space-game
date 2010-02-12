@@ -1,7 +1,6 @@
 #include "updatesceneframelistener.h"
 #include "mylogger.h"
 #include "konstanten.h"
-#include "myoverlays.h"
 #include <OgreTextAreaOverlayElement.h>
 
 UpdateSceneFrameListener::UpdateSceneFrameListener(RenderWindow* win, Camera* cam, SceneManager* sceneMgr, Game* modle): ExampleFrameListener(win, cam, false,false)
@@ -25,75 +24,6 @@ UpdateSceneFrameListener::UpdateSceneFrameListener(RenderWindow* win, Camera* ca
 //     mCamNode = player->tryGetNode();
 //     mCamNode->attachObject(cam);
 //   }
-  
-  //this->
-  
-  
- /* ////////////////////////////TESTING//////////////////////////////
-  OverlayManager& overlayManager = OverlayManager::getSingleton();
-
-  // Create a panel
-  OverlayContainer* panel = static_cast<OverlayContainer*>(
-      overlayManager.createOverlayElement("Panel", "PanelName"));
-  panel->setMetricsMode(Ogre::GMM_PIXELS);
-  panel->setPosition(10, 10);
-  panel->setDimensions(500, 10);
-  panel->setMaterialName("Hud/Energie");*/
-  // Create a text area
-/*  TextAreaOverlayElement* textArea = static_cast<TextAreaOverlayElement*>(
-      overlayManager.createOverlayElement("TextArea", "TextAreaName"));
-  textArea->setMetricsMode(Ogre::GMM_PIXELS);
-  textArea->setPosition(0, 0);
-  textArea->setDimensions(100, 100);
-  textArea->setCaption("Hello, World!");
-  textArea->setCharHeight(16);
-  textArea->setFontName("TrebuchetMSBold");
-  textArea->setColourBottom(ColourValue(0.3, 0.5, 0.3));
-  textArea->setColourTop(ColourValue(0.5, 0.7, 0.5));
-
-*/
-  
-    // Create an overlay, and add the panel
-//     /*Overlay* overlay = overlayManager.create("OverlayName");
-//     o*/verlay->add2D(panel);
-// Add the text area to the panel
-//panel->addChild(textArea);
-
-
-    // Show the overlay
-/*    overlay->show();*/
-  
- //   MyOverlays myOverlays();
-  OverlayManager& overlayManager = OverlayManager::getSingleton();
-   OverlayContainer* Leben = static_cast<OverlayContainer*>(
-    overlayManager.createOverlayElement("Panel","PanelLeben"));
-  Leben->setMetricsMode(Ogre::GMM_PIXELS);
-  Leben->setPosition(10, 10);
-  Leben->setDimensions(10,500);
-  Leben->setMaterialName("Hud/Energie");
-
-   OverlayContainer* Schild = static_cast<OverlayContainer*>(
-    overlayManager.createOverlayElement("Panel","PanelSchild"));
-  Schild->setMetricsMode(Ogre::GMM_PIXELS);
-  Schild->setPosition(25, 10);
-  Schild->setDimensions(10, 500);
-  Schild->setMaterialName("Hud/Energie");
-  
-   OverlayContainer* WapponPower = static_cast<OverlayContainer*>(
-    overlayManager.createOverlayElement("Panel","PanelWapponPower"));
-  WapponPower->setMetricsMode(Ogre::GMM_PIXELS);
-  WapponPower->setPosition(40, 10);
-  WapponPower->setDimensions(10, 500);
-  WapponPower->setMaterialName("Hud/Energie");
-  
-  Overlay* overlay = overlayManager.create("OverlayName");
-  overlay->add2D(Leben);
-  overlay->add2D(Schild);
-  overlay->add2D(WapponPower);
-  // Show the overlay
-  overlay->show();
-////////////////////////////STOPTESTING//////////////////////////////
-
   
     this->showDebugOverlay(false);
 
@@ -137,17 +67,17 @@ UpdateSceneFrameListener::UpdateSceneFrameListener(RenderWindow* win, Camera* ca
         cout << "PLAYER NODE NICHT GESETZT!";
 
 // http://www.ogre3d.org/wiki/index.php/Tutorial_5
-    this->mSceneMgr->setSkyBox(true, "Examples/SpaceSkyBox");
+  //  this->mSceneMgr->setSkyBox(true, "Examples/SpaceSkyBox");
   //  this->mSceneMgr->setSkyBox(true, "SkyBox/Hubble1");
   
-//    Plane plane;
-//    plane.d = 10000;
-// //    plane.normal = Vector3::NEGATIVE_UNIT_X; 
-//    plane.normal = Vector3::UNIT_Z;
+   Plane plane;
+   plane.d = 10000;
+   plane.normal = Vector3::NEGATIVE_UNIT_X; 
+   plane.normal = Vector3::UNIT_Z;
   
   // mSceneMgr->setSkyPlane(true, plane, "Examples/SpaceSkyPlane", 1500, 75);
 
-//   mSceneMgr->setSkyPlane(true, plane, "Examples/SpaceSkyPlane", 1500, 50, true, 1.5f, 150, 150);
+   mSceneMgr->setSkyPlane(true, plane, "Examples/SpaceSkyPlane", 1500, 50, true, 1.5f, 150, 150);
 //     mSceneMgr->setSkyPlane(true, plane, "SkyBox/test1", 1500, 51, true, 1.5f, 150, 150);
   
     this->intersectionQuery = mSceneMgr->createIntersectionQuery();
@@ -194,6 +124,8 @@ bool UpdateSceneFrameListener::frameStarted(const FrameEvent &evt) {
 
     this->moveCamera();
     this->moveMyCamera();
+    
+    this->myOverlay.Aktuallisieren(this->player->getLife(), this->player->getShild(), this->player->getWappon());
 
     if (this->player == NULL) {
         return false;
@@ -201,8 +133,8 @@ bool UpdateSceneFrameListener::frameStarted(const FrameEvent &evt) {
     return ret;
 }
 void UpdateSceneFrameListener::Kolisionen() {
-    IntersectionSceneQueryResult& queryResult = mSceneMgr->createIntersectionQuery()->execute();
-
+//     IntersectionSceneQueryResult& queryResult = mSceneMgr->createIntersectionQuery()->execute();
+    IntersectionSceneQueryResult& queryResult = this->intersectionQuery->execute();
     for (list<SceneQueryMovableObjectPair>::iterator it = queryResult.movables2movables.begin();it != queryResult.movables2movables.end(); ++it) {
         movableObject * first = Ogre::any_cast<movableObject*>((*it).first->getUserAny());
         movableObject * second = Ogre::any_cast<movableObject*>((*it).second->getUserAny());
@@ -272,17 +204,17 @@ void UpdateSceneFrameListener::getNewObjects()
 
         NodesNum++;
     }
-//   //  if (NodesNumOld > NodesNum) {
-//         mSceneMgr->destroyQuery(intersectionQuery);
-//         this->intersectionQuery = mSceneMgr->createIntersectionQuery();
-//   //  }
+   if (NodesNumOld > NodesNum) {
+        mSceneMgr->destroyQuery(intersectionQuery);
+        this->intersectionQuery = mSceneMgr->createIntersectionQuery();
+   }
 }
 
 bool UpdateSceneFrameListener::JoyInput() {
+  if (js.joy1){
     bool boost;
     // This is needed in the even queue of SDL
     js.joyupdate();
-
     // now we query for some input
     int k=0;
     for ( int i=0; i < SDL_JoystickNumButtons ( js.joy1 ); ++i ) {
@@ -331,7 +263,7 @@ bool UpdateSceneFrameListener::JoyInput() {
                     projectile * proj = new projectile(PROJECTIELESPEED,vec2, MUNITIONSHEAVINESS);
                     proj->Damage = 4;
                     player->fireWappon(proj);
-             //   }
+                }
             }
 
             break;
@@ -372,6 +304,7 @@ bool UpdateSceneFrameListener::JoyInput() {
         vec *= SPEEDBOOSTSTRENGTH;
 
     player->accelerate(vec);
+  }
     return true;
 }
 
@@ -438,14 +371,18 @@ bool UpdateSceneFrameListener::KeyInput()
     if (mKeyboard->isKeyDown(OIS::KC_F2)) {
         this->CamPosition = CAMFOLLOW;
 
-        this->mCamera->roll(Radian(90));
+    //    this->mCamera->roll(Radian(90));
     }
     //Zoom in der CAMTOPVIEW
     if (mKeyboard->isKeyDown(OIS::KC_PGUP)) {
         this->Zoom += 50 + Zoom/30;
+        if (Zoom > 95732)
+          Zoom = 95732;
+        //cout << Zoom << endl;
     }
     if (mKeyboard->isKeyDown(OIS::KC_PGDOWN) && (Zoom > 50)) {
         this->Zoom -= 50 + Zoom/30;
+      //  cout << Zoom << endl;
     }
 
 

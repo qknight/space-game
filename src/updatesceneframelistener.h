@@ -10,6 +10,7 @@
 #include "OgreSceneNode.h"
 #include "movableobject.h"
 #include "joystick.h"
+#include "myoverlays.h"
 
 using namespace Ogre;
 
@@ -33,6 +34,8 @@ private:
     bool JoyInput();
     void moveMyCamera();
 protected:
+  
+    MyOverlays myOverlay;
     Game *game;
     Player *player;
 

@@ -11,7 +11,7 @@ movableObject::movableObject(String ObjectName, float heaviness)
   
   this->position.x = 0;
   this->position.y = 0;
-  this->speed.x= 0;
+  this->speed.x = 0;
   this->speed.y = 0;
   this->acceleration.x = 0;
   this->acceleration.y = 0;
@@ -27,6 +27,9 @@ movableObject::movableObject(String ObjectName, float heaviness)
   
   this->heaviness = heaviness;
   
+  circle = false;
+  dead = false;
+  this->circlePoint = NULL;
 }
 
 movableObject::~movableObject()

@@ -27,6 +27,11 @@ class Player : public movableObject
     void awake();
     
     void move();
+    
+    float getLife();
+    float getShild();
+    float getWappon();
+    
   protected:
     
     
