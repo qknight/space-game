@@ -1,6 +1,7 @@
 #include "updatesceneframelistener.h"
 #include "mylogger.h"
 #include "konstanten.h"
+#include "myoverlays.h"
 #include <OgreTextAreaOverlayElement.h>
 
 UpdateSceneFrameListener::UpdateSceneFrameListener(RenderWindow* win, Camera* cam, SceneManager* sceneMgr, Game* modle): ExampleFrameListener(win, cam, false,false)
@@ -27,7 +28,8 @@ UpdateSceneFrameListener::UpdateSceneFrameListener(RenderWindow* win, Camera* ca
   
   //this->
   
-  ////////////////////////////TESTING//////////////////////////////
+  
+ /* ////////////////////////////TESTING//////////////////////////////
   OverlayManager& overlayManager = OverlayManager::getSingleton();
 
   // Create a panel
@@ -36,7 +38,7 @@ UpdateSceneFrameListener::UpdateSceneFrameListener(RenderWindow* win, Camera* ca
   panel->setMetricsMode(Ogre::GMM_PIXELS);
   panel->setPosition(10, 10);
   panel->setDimensions(500, 10);
-  panel->setMaterialName("Hud/Energie");
+  panel->setMaterialName("Hud/Energie");*/
   // Create a text area
 /*  TextAreaOverlayElement* textArea = static_cast<TextAreaOverlayElement*>(
       overlayManager.createOverlayElement("TextArea", "TextAreaName"));
@@ -52,16 +54,47 @@ UpdateSceneFrameListener::UpdateSceneFrameListener(RenderWindow* win, Camera* ca
 */
   
     // Create an overlay, and add the panel
-    Overlay* overlay = overlayManager.create("OverlayName");
-    overlay->add2D(panel);
+//     /*Overlay* overlay = overlayManager.create("OverlayName");
+//     o*/verlay->add2D(panel);
 // Add the text area to the panel
 //panel->addChild(textArea);
 
 
     // Show the overlay
-    overlay->show();
-    ////////////////////////////STOPTESTING//////////////////////////////
+/*    overlay->show();*/
+  
+ //   MyOverlays myOverlays();
+  OverlayManager& overlayManager = OverlayManager::getSingleton();
+   OverlayContainer* Leben = static_cast<OverlayContainer*>(
+    overlayManager.createOverlayElement("Panel","PanelLeben"));
+  Leben->setMetricsMode(Ogre::GMM_PIXELS);
+  Leben->setPosition(10, 10);
+  Leben->setDimensions(10,500);
+  Leben->setMaterialName("Hud/Energie");
 
+   OverlayContainer* Schild = static_cast<OverlayContainer*>(
+    overlayManager.createOverlayElement("Panel","PanelSchild"));
+  Schild->setMetricsMode(Ogre::GMM_PIXELS);
+  Schild->setPosition(25, 10);
+  Schild->setDimensions(10, 500);
+  Schild->setMaterialName("Hud/Energie");
+  
+   OverlayContainer* WapponPower = static_cast<OverlayContainer*>(
+    overlayManager.createOverlayElement("Panel","PanelWapponPower"));
+  WapponPower->setMetricsMode(Ogre::GMM_PIXELS);
+  WapponPower->setPosition(40, 10);
+  WapponPower->setDimensions(10, 500);
+  WapponPower->setMaterialName("Hud/Energie");
+  
+  Overlay* overlay = overlayManager.create("OverlayName");
+  overlay->add2D(Leben);
+  overlay->add2D(Schild);
+  overlay->add2D(WapponPower);
+  // Show the overlay
+  overlay->show();
+////////////////////////////STOPTESTING//////////////////////////////
+
+  
     this->showDebugOverlay(false);
 
     movableObject *Sun = new movableObject("SUN", SUNHEAVINESS);
@@ -108,6 +141,18 @@ UpdateSceneFrameListener::UpdateSceneFrameListener(RenderWindow* win, Camera* ca
 
 // http://www.ogre3d.org/wiki/index.php/Tutorial_5
     this->mSceneMgr->setSkyBox(true, "Examples/SpaceSkyBox");
+  //  this->mSceneMgr->setSkyBox(true, "SkyBox/Hubble1");
+  
+//    Plane plane;
+//    plane.d = 10000;
+// //    plane.normal = Vector3::NEGATIVE_UNIT_X; 
+//    plane.normal = Vector3::UNIT_Z;
+  
+  // mSceneMgr->setSkyPlane(true, plane, "Examples/SpaceSkyPlane", 1500, 75);
+
+//   mSceneMgr->setSkyPlane(true, plane, "Examples/SpaceSkyPlane", 1500, 50, true, 1.5f, 150, 150);
+//     mSceneMgr->setSkyPlane(true, plane, "SkyBox/test1", 1500, 51, true, 1.5f, 150, 150);
+  
     this->intersectionQuery = mSceneMgr->createIntersectionQuery();
 }
 
@@ -156,7 +201,7 @@ bool UpdateSceneFrameListener::frameStarted(const FrameEvent &evt) {
     return ret;
 }
 void UpdateSceneFrameListener::Kolisionen() {
-    IntersectionSceneQueryResult& queryResult = intersectionQuery->execute();
+    IntersectionSceneQueryResult& queryResult = mSceneMgr->createIntersectionQuery()->execute();
 
     for (list<SceneQueryMovableObjectPair>::iterator it = queryResult.movables2movables.begin();it != queryResult.movables2movables.end(); ++it) {
         movableObject * first = Ogre::any_cast<movableObject*>((*it).first->getUserAny());
@@ -217,14 +262,15 @@ void UpdateSceneFrameListener::getNewObjects()
         ent->setUserAny(Any(obj));
 
         node->attachObject(ent);
-        node->setPosition(Vector3(obj->getPosition().x,obj->getPosition().y,SPIELEBENE));
+       node->setPosition(Vector3(obj->getPosition().x,obj->getPosition().y,SPIELEBENE));
+        node->setPosition(Vector3(SPIELEBENE,obj->getPosition().x,obj->getPosition().y));
 
         NodesNum++;
     }
-    if (NodesNumOld > NodesNum) {
-        mSceneMgr->destroyQuery(intersectionQuery);
-        this->intersectionQuery = mSceneMgr->createIntersectionQuery();
-    }
+//   //  if (NodesNumOld > NodesNum) {
+//         mSceneMgr->destroyQuery(intersectionQuery);
+//         this->intersectionQuery = mSceneMgr->createIntersectionQuery();
+//   //  }
 }
 
 bool UpdateSceneFrameListener::JoyInput() {
@@ -274,12 +320,12 @@ bool UpdateSceneFrameListener::JoyInput() {
                     }
                 }
                 cout << vec2.x << " " << vec2.y << endl;
-                if (!vec2.isZeroLength()) {
+               // if (!vec2.isZeroLength()) {
                     vec2.normalise();
                     projectile * proj = new projectile(PROJECTIELESPEED,vec2, MUNITIONSHEAVINESS);
                     proj->Damage = 4;
                     player->fireWappon(proj);
-                }
+             //   }
             }
 
             break;
@@ -425,8 +471,12 @@ void UpdateSceneFrameListener::moveMyCamera() {
         float sX = locat.x * 1500 + Zoom *locat.x/50;
         float sY = locat.y * 1500 + Zoom *locat.y/50;
 
-        this->mCamera->setPosition(Vector3(x - sX, y - sY,SPIELEBENE + Zoom));
-        this->mCamera->lookAt(Vector3(x + sX ,y +sY,SPIELEBENE));
+       this->mCamera->setPosition(Vector3(x - sX, y - sY,SPIELEBENE + Zoom));
+       this->mCamera->lookAt(Vector3(x + sX ,y +sY,SPIELEBENE));
+	
+	
+//         this->mCamera->setPosition(Vector3(SPIELEBENE + Zoom,x - sX, y - sY));
+//         this->mCamera->lookAt(Vector3(SPIELEBENE,x + sX ,y +sY));
         this->mCamera->setNearClipDistance(5);
     }
     break;

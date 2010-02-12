@@ -13,7 +13,7 @@ void movObjChangedNotifier::notify(class notifyable *obj)
   test = (movableObject*) obj;
   
   node->setPosition(test->getPosition().x, test->getPosition().y, SPIELEBENE);
-  
+/*  node->setPosition(SPIELEBENE, test->getPosition().x, test->getPosition().y);*/
  // mylogger::log("Die Positionsänderung eines Objekts wurde dem Knoten übergeben!");
 }
 

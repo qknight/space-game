@@ -10,7 +10,7 @@ static const float SPEEDBOOST = 300;
 static const float MUNITIONSHEAVINESS = 10;
 static const float MUNITIONSBESCHLEUNIGUNG = 0.9;
 static const int WAPPONREALOADTIME = 20;
-static const float PROJECTIELESPEED = 13;
+static const float PROJECTIELESPEED = 33;
 
 static const float PLANETHEAVINESS = 2400000000000;
 static const float SUNHEAVINESS =   70000000000000;
