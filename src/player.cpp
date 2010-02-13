@@ -16,6 +16,8 @@ bool Player::fireWappon(projectile* obj)
 void Player::reload()
 {
   firedWappon--;
+  if (this->shild < this->maxShild)
+    shild += SHILDREGENERATION;
   if (boostAvaible < SPEEDBOOST)
     boostAvaible += 0.02;
   if (boostAvaible >= SPEEDBOOST)
@@ -35,7 +37,8 @@ Player::Player(Game *game,float heaviness):movableObject("Player", heaviness)
   this->game = game;
   
   life = INITIALLIVE;
-  shild = INITIALSHILD;
+  shild = 0;
+  maxShild = INITIALSHILD;
   wappon = INITIALWAPPON;
   
   firedWappon = 0;
@@ -80,8 +83,8 @@ void Player::kill(){
 void Player::awake(){
     dead = false;  
   life = INITIALLIVE;
-  shild = INITIALSHILD;
-  wappon = INITIALWAPPON;
+ // maxShild = INITIALSHILD;
+  //wappon = INITIALWAPPON;
   this->speed = 0;
 }
 /* 
@@ -100,3 +103,22 @@ float Player::getWappon(){
   return wappon;
 }
 
+void Player::moreShild(){
+  float add = 1;
+  this->maxShild += add;
+  if (maxShild > 120)
+    maxShild = 120;
+  
+  this->wappon = (INITIALWAPPON*INITIALSHILD)/maxShild;
+  
+}
+void Player::moreWapponPower(){
+  
+  float add = 1;
+  this->wappon += add;
+  if (wappon > 120)
+    wappon = 120;
+  this->maxShild = (INITIALWAPPON*INITIALSHILD)/wappon;
+  if (maxShild < this->shild)
+    shild = maxShild;
+}

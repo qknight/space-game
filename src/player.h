@@ -32,6 +32,9 @@ class Player : public movableObject
     float getShild();
     float getWappon();
     
+    void moreShild();
+    void moreWapponPower();
+    
   protected:
     
     
@@ -42,8 +45,10 @@ class Player : public movableObject
     static const float INITIALSHILD = 33;
     static const float INITIALWAPPON = 33;
     static const float WAPPONACCELERATION = 2;
+    static const float SHILDREGENERATION = 0.01;
     
     float life;
+    float maxShild;
     float shild;
     float wappon;
     

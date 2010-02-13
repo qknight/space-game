@@ -15,6 +15,7 @@ class MyOverlays
    OverlayContainer* Schild;
    OverlayContainer* WapponPower;
    Overlay* overlay;
+   Overlay* overlayLeben;
 };
 
 #endif // MYOVERLAYS_H

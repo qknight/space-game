@@ -7,7 +7,7 @@ UpdateSceneFrameListener::UpdateSceneFrameListener(RenderWindow* win, Camera* ca
 {
     CamPosition = CAMFOLLOW;
 //  CamPosition = 3;
-    this->Zoom = 1500;
+    this->Zoom = 3000;
 //   mMouse->capture();
 
     mKeyboard->capture();
@@ -77,8 +77,8 @@ UpdateSceneFrameListener::UpdateSceneFrameListener(RenderWindow* win, Camera* ca
   
   // mSceneMgr->setSkyPlane(true, plane, "Examples/SpaceSkyPlane", 1500, 75);
 
-   mSceneMgr->setSkyPlane(true, plane, "Examples/SpaceSkyPlane", 1500, 50, true, 1.5f, 150, 150);
-//     mSceneMgr->setSkyPlane(true, plane, "SkyBox/test1", 1500, 51, true, 1.5f, 150, 150);
+ //  mSceneMgr->setSkyPlane(true, plane, "Examples/SpaceSkyPlane", 1500, 1, true, 1.5f, 150, 150);
+      mSceneMgr->setSkyPlane(true, plane, "SkyBox/test1", 200, 1, true, 1.5f, 150, 150);
   
     this->intersectionQuery = mSceneMgr->createIntersectionQuery();
     
@@ -125,8 +125,10 @@ bool UpdateSceneFrameListener::frameStarted(const FrameEvent &evt) {
     this->moveCamera();
     this->moveMyCamera();
     
-    this->myOverlay.Aktuallisieren(this->player->getLife(), this->player->getShild(), this->player->getWappon());
-
+//     cout << player->getLife() << " " << this->player->getShild()<<" " <<this->player->getWappon() << endl;
+    const int faktor = 7;
+    this->myOverlay.Aktuallisieren(faktor*this->player->getLife(), faktor*this->player->getShild(),faktor* this->player->getWappon());
+//     this->myOverlay.Aktuallisieren(100, 33, 33);
     if (this->player == NULL) {
         return false;
     }
@@ -199,7 +201,7 @@ void UpdateSceneFrameListener::getNewObjects()
         ent->setUserAny(Any(obj));
 
         node->attachObject(ent);
-       node->setPosition(Vector3(obj->getPosition().x,obj->getPosition().y,SPIELEBENE));
+        node->setPosition(Vector3(obj->getPosition().x,obj->getPosition().y,SPIELEBENE));
         node->setPosition(Vector3(SPIELEBENE,obj->getPosition().x,obj->getPosition().y));
 
         NodesNum++;
@@ -234,9 +236,13 @@ bool UpdateSceneFrameListener::JoyInput() {
                 // button 4 and 6 are 'links hinten 1 and links hinten 2'
             case 4:
                 this->Zoom += 50 + Zoom/30;
+		if (Zoom > 95732)
+		  Zoom = 95732;
                 break;
             case 6:
                 this->Zoom -= 50 + Zoom/30;
+		if (Zoom < 3000)
+		  Zoom = 3000;
                 break;
 
                 // button 5 and 7 are 'rechts hinten 1 and rechts hinten 2'
@@ -378,13 +384,19 @@ bool UpdateSceneFrameListener::KeyInput()
         this->Zoom += 50 + Zoom/30;
         if (Zoom > 95732)
           Zoom = 95732;
-        //cout << Zoom << endl;
+  //     cout << Zoom << endl;
     }
-    if (mKeyboard->isKeyDown(OIS::KC_PGDOWN) && (Zoom > 50)) {
+    if (mKeyboard->isKeyDown(OIS::KC_PGDOWN)) {
         this->Zoom -= 50 + Zoom/30;
-      //  cout << Zoom << endl;
+	if (Zoom < 3000)
+	  Zoom = 3000;
+  //      cout << Zoom << endl;
     }
 
+    if (mKeyboard->isKeyDown(OIS::KC_Q))
+      	this->player->moreShild();
+    if (mKeyboard->isKeyDown(OIS::KC_E))
+    	this->player->moreWapponPower();
 
     //Naechstes Leben
     if (mKeyboard->isKeyDown(OIS::KC_SPACE) && player->isDead()) {

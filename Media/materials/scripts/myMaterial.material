@@ -1,0 +1,89 @@
+material Hud/Energie
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			texture_unit
+			{
+				texture dkyellow.png
+			}
+		}
+	}
+}
+material SkyBox/Hubble1
+{
+	technique
+	{
+		pass
+		{
+			//lighting off
+			//depth_write off
+
+			ambient 0.8 0.8 0.8
+			texture_unit
+			{
+				texture 1.jpg
+           			//scale 1 1
+				//tex_address_mode clamp
+			}
+		}
+	}
+}
+material SkyBox/test1
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			texture_unit
+			{
+				texture 2.jpg
+			}
+		}
+	}
+}
+material OverLay/life
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			texture_unit
+			{
+				texture life.jpg
+			}
+		}
+	}
+}
+material OverLay/shild
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			texture_unit
+			{
+				texture shild.jpg
+			}
+		}
+	}
+}
+material OverLay/wapponpower
+{
+	technique
+	{
+		pass
+		{
+			lighting off
+			texture_unit
+			{
+				texture wapponpower.jpg
+			}
+		}
+	}
+}
