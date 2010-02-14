@@ -4,9 +4,11 @@
 bool Player::fireWappon(projectile* obj)
 {
   if(firedWappon < 1 && !this->isDead()){
-    firedWappon = WAPPONREALOADTIME;
+    firedWappon = WAPPONREALOADTIME + 50/wappon;
     obj->setSpeed(obj->getSpeed() + this->speed);
-    obj->teleport(this->getPosition() + obj->getSpeed().normalisedCopy()*this->wapponStartPosition);   
+    //obj->teleport((this->getPosition()) + obj->getSpeed().normalisedCopy()*this->wapponStartPosition);   
+    obj->teleport(this->getPosition() + obj->getSpeed());
+    obj->Damage = wappon/1.7;
     this->game->addLightObject(obj);
     return true;
   }

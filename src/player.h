@@ -54,7 +54,7 @@ class Player : public movableObject
     
     float boostAvaible;
     
-    static const float wapponStartPosition = 150;//die länge die die die Munition vor dem eigenen Schiff startet.
+    static const float wapponStartPosition = 5;//die länge die die die Munition vor dem eigenen Schiff startet.
     Game *game;
     int firedWappon;
     

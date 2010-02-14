@@ -8,11 +8,11 @@ class projectile : public movableObject {
   public:
     projectile( float speedboost, Ogre::Vector2 acceleration, float heaviness);
 
-    int getNumber();  
+ //   int getNumber();  
     Ogre::String getObjektName();
     
   protected:
-    int num;
+   // int num;
 };
 
 #endif // PROJECTILE_H

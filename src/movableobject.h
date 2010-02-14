@@ -44,7 +44,7 @@ class movableObject : public notifyable
     bool isOutOfArea();
     void moveSlow();
     
-    int Damage;
+    float Damage;
     
     bool dead;
  

@@ -17,7 +17,7 @@ UpdateSceneFrameListener::UpdateSceneFrameListener(RenderWindow* win, Camera* ca
     game = modle;
     player = new Player(game, PLAYERHEAVINESS);
     player->teleport(Vector2(-5500,5500));
-    player->accelerate(Vector2(5,-5));
+    //player->accelerate(Vector2(5,-5));
     game->addLightObject(player);
     mCamNode = cam->getParentSceneNode();
 //   if (player->tryGetNode() != NULL){
@@ -34,11 +34,60 @@ UpdateSceneFrameListener::UpdateSceneFrameListener(RenderWindow* win, Camera* ca
 
     movableObject *Planet = new movableObject("Planet", PLANETHEAVINESS);
     Planet->circle = true;
-    Planet->setCircleRadius(6500);
+    Planet->setCircleRadius(7500);
     Planet->setGravitationPartner(Sun);
     Planet->circlespeed = 0.009;
     game->addHeavyObject(Planet);
+    { 
+      movableObject *Planet2 = new movableObject("Planet", PLANETHEAVINESS);
+      Planet2->circle = true;
+      Planet2->setCircleRadius(30500);
+      Planet2->setGravitationPartner(Sun);
+      Planet2->circlespeed = 0.0033;
+      game->addHeavyObject(Planet2);
+      movableObject *Moon = new movableObject("Moon", 1500000000000);
+  //  Moon->teleport(Vector2(1000,0));
+      Moon->circle = true;
+      Moon->setCircleRadius(2300);
+      Moon->setGravitationPartner(Planet2);
 
+      Moon->circlespeed = 0.011;
+
+      game->addHeavyObject(Moon);
+    }
+    {
+      movableObject *Komet = new movableObject("Komet", 4000000000000);
+      Komet->circle = true;
+      Komet->a = 17000;
+      Komet->b = 21000;
+      Komet->circlespeed = 0.0021;
+      Komet->setGravitationPartner(Sun);
+      game->addHeavyObject(Komet);
+    }
+    
+    {
+      movableObject *Moon = new movableObject("Moon", 150000000000000);
+  //  Moon->teleport(Vector2(1000,0));
+      Moon->circle = true;
+      Moon->setCircleRadius(1300);
+
+      Moon->circlespeed = 0.011;
+      Moon->teleport(Vector2(7000,7000));
+      game->addHeavyObject(Moon);
+      
+      movableObject *Moon2 = new movableObject("Moon", 150000000000000);
+  //  Moon->teleport(Vector2(1000,0));
+      Moon2->circle = true;
+      Moon2->setCircleRadius(1300);
+      Moon2->teleport(Vector2(7100,7100));
+
+      Moon2->circlespeed = 0.011;
+
+      Moon2->setGravitationPartner(Moon);
+      Moon->setGravitationPartner(Moon2);
+      game->addHeavyObject(Moon2);
+    }
+      
     movableObject *Moon = new movableObject("Moon", 1500000000000);
 //  Moon->teleport(Vector2(1000,0));
     Moon->circle = true;
@@ -57,7 +106,6 @@ UpdateSceneFrameListener::UpdateSceneFrameListener(RenderWindow* win, Camera* ca
     movableObject *Hack = new movableObject("Hack", 0);
     Hack->teleport(Vector2(0,28000));
     Komet->setGravitationPartner(Sun);
-
     game->addHeavyObject(Komet);
 
     this->mSceneMgr = sceneMgr;
@@ -113,6 +161,8 @@ bool UpdateSceneFrameListener::frameStarted(const FrameEvent &evt) {
     if (this->player == NULL) {
         return false;
     }
+    if (rand() % 40 == 0)
+       game->addLightObject(new metheor());
 
     // this is needed for timer stuff
     player->reload(); // a weapon needs a few cycles to reload, if a player tries to shoot nothing happens
@@ -169,16 +219,17 @@ void UpdateSceneFrameListener::getNewObjects()
             player->addNotifier(new movObjChangedNotifier(node, mSceneMgr));
             ent = mSceneMgr->createEntity("player"+str.str(),"Abstrikes.mesh");
         } else if (objName == "projectile") {
-            node->scale(Vector3(5,5,5));
-            obj->addNotifier(new movObjChangedNotifier(node, mSceneMgr));
-            ent = mSceneMgr->createEntity("projectile" + str.str(),"Barrel.mesh");
+            node->scale(Vector3(0.1,0.1,0.1));
+/*            obj->addNotifier(new movObjChangedNotifier(node, mSceneMgr));*/
+            ent = mSceneMgr->createEntity("projectile" + str.str(),"sphere.mesh");
+	    ent->setMaterialName("Wappon/Bunt");
         } else if (objName == "Planet") {
             node->scale(Vector3(3,3,3));
-            obj->addNotifier(new movObjChangedNotifier(node, mSceneMgr));
+/*            obj->addNotifier(new movObjChangedNotifier(node, mSceneMgr));*/
             ent = mSceneMgr->createEntity("Planet" + str.str(),"sphere.mesh");
         } else if (objName == "SUN") {
             node->scale(Vector3(15,15,15));
-            obj->addNotifier(new movObjChangedNotifier(node, mSceneMgr));
+/*            obj->addNotifier(new movObjChangedNotifier(node, mSceneMgr));*/
             ent = mSceneMgr->createEntity("SUN" + str.str(),"sphere.mesh");
 	    ent->setMaterialName("space-game/myMoon");
             Light* myLight = mSceneMgr->createLight("nameOfTheLight");
@@ -195,19 +246,23 @@ void UpdateSceneFrameListener::getNewObjects()
 //             ent->setMaterialName("shader/gradient");
 	    
         } else if (objName == "Moon") {
-            obj->addNotifier(new movObjChangedNotifier(node, mSceneMgr));
+/*            obj->addNotifier(new movObjChangedNotifier(node, mSceneMgr));*/
             ent = mSceneMgr->createEntity("Moon" + str.str(),"sphere.mesh");
         } else if (objName == "Komet") {
             node->scale(0.4,0.4,0.4);
-            obj->addNotifier(new movObjChangedNotifier(node, mSceneMgr));
+//             obj->addNotifier(new movObjChangedNotifier(node, mSceneMgr));
             ent = mSceneMgr->createEntity("Komet" + str.str(),"sphere.mesh");
-        }
+        } else if (objName ==  "metheor"){
+	    node->scale(0.4 +(rand()%3)/2,0.4 +(rand()%3)/2,0.4 +(rand()%3)/2);
+	    ent = mSceneMgr->createEntity("metheor"  + str.str(),"sphere.mesh");
+	}
 
         ent->setUserAny(Any(obj));
 
         node->attachObject(ent);
         node->setPosition(Vector3(obj->getPosition().x,obj->getPosition().y,SPIELEBENE));
         node->setPosition(Vector3(SPIELEBENE,obj->getPosition().x,obj->getPosition().y));
+	obj->addNotifier(new movObjChangedNotifier(node, mSceneMgr));
 
         NodesNum++;
     }
@@ -215,7 +270,6 @@ void UpdateSceneFrameListener::getNewObjects()
         mSceneMgr->destroyQuery(intersectionQuery);
         this->intersectionQuery = mSceneMgr->createIntersectionQuery();
 	intersectionQuery->setQueryMask(~100);
-
    }
 }
 
@@ -346,11 +400,14 @@ bool UpdateSceneFrameListener::KeyInput()
     }
     if (mKeyboard->isKeyDown(OIS::KC_D)) {
         vec.x += 1;
+    } 
+    if (mKeyboard->isKeyDown(OIS::KC_F)) {
+	game->addLightObject(new metheor());
     }
     if (!vec.isZeroLength()) {
         vec.normalise();
         projectile * proj = new projectile(PROJECTIELESPEED,vec, MUNITIONSHEAVINESS);
-        proj->Damage = 4;
+       // proj->Damage = 4;
         player->fireWappon(proj);
     }
     //Lenken
@@ -410,8 +467,8 @@ bool UpdateSceneFrameListener::KeyInput()
 
     //Naechstes Leben
     if (mKeyboard->isKeyDown(OIS::KC_SPACE) && player->isDead()) {
-        this->player->teleport(Vector2(rand()%(2*SPIELFELDBREITE) - SPIELFELDBREITE,rand()%(2*SPIELFELDBREITE) - SPIELFELDBREITE));
-        this->player->setSpeed(Vector2(rand()%3, rand()%3));
+        this->player->teleport(Vector2(rand()%(SPIELFELDBREITE/2) - SPIELFELDBREITE/4,rand()%(SPIELFELDBREITE/2) - SPIELFELDBREITE/4));
+        //this->player->setSpeed(Vector2(rand()%3, rand()%3));
         this->player->awake();
     }
     return true;

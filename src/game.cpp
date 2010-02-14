@@ -58,8 +58,8 @@ void Game::moveLightObjects(){
 }
 
 void Game::kollision(movableObject* arg1, movableObject* arg2){
-  
-//    if (!arg1->isDead() || arg2->isDead()){
+ // if (!(arg1->getObjektName()== "metheor") && !(arg2->getObjektName()== "metheor"))
+// player | player
   if (arg1->getObjektName() == "Player" && arg2->getObjektName() == "Player"){
     Player *pl1 = (Player*)arg1;
     Player *pl2 = (Player*)arg2;
@@ -67,25 +67,44 @@ void Game::kollision(movableObject* arg1, movableObject* arg2){
       pl1->kill();
       pl2->kill();
     }
+    // player | somthing else
   } else if (arg1->getObjektName() == "Player"){
     Player *pl1 = (Player*)arg1;
     if (!pl1->isDead()){
       pl1->takeDamage(arg2->Damage);
-      if (arg2 ->getObjektName() == "projectile"){
+      //player | projektile
+      if (arg2 ->getObjektName() == "projectile"|| arg1->getObjektName() == "metheor"){
         this->lightObjects.remove(arg2);
         delete arg2;
       }
     }
+    //somthing | player
   } else if (arg2->getObjektName() == "Player"){
     Player *pl1 = (Player*)arg2;
     if (!pl1->isDead()){
       pl1->takeDamage(arg2->Damage);
-      if (arg1 ->getObjektName() == "projectile"){
+      //projectile | player
+      if (arg1->getObjektName() == "projectile" || arg1->getObjektName() == "metheor"){
         this->lightObjects.remove(arg1);
         delete arg1;
       }
     }
   } else {
+    if (arg1->getObjektName() == "metheor"){
+      metheor* met = (metheor*)arg1;
+      if (met->takeDamege(arg2->Damage)){
+	this->lightObjects.remove(arg1);
+	delete arg1;
+      }	
+    }
+    if (arg2->getObjektName() == "metheor"){
+      metheor* met = (metheor*)arg2;
+      if (met->takeDamege(arg1->Damage)){
+	this->lightObjects.remove(arg1);
+	delete arg1;
+      }	
+    }
+    // projectile | projectile 
     if (arg1 ->getObjektName() == "projectile"){
       this->lightObjects.remove(arg1);
       delete arg1;
@@ -118,7 +137,7 @@ void Game::moveHeavyObjects(){
   //kollisionen();
 }
 
-//TODO Bisher: DUMMYFUNKTION DIE NUR OBJEKTE IM MITTELPUNT ENTFERNT!!
+//alte DUMMYFUNKTION DIE NUR OBJEKTE nahe dem MITTELPUNT ENTFERNT!!
 /*
 void Game::kollisionen() {  
   list<movableObject*>::iterator it;

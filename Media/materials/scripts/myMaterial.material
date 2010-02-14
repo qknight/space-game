@@ -1,4 +1,4 @@
-material Hud/Energie
+material Wappon/Bunt
 {
 	technique
 	{
@@ -7,7 +7,7 @@ material Hud/Energie
 			lighting off
 			texture_unit
 			{
-				texture dkyellow.png
+				texture nm_rt.png
 			}
 		}
 	}
@@ -40,7 +40,9 @@ material SkyBox/test1
 			lighting off
 			texture_unit
 			{
-				texture 2.jpg
+//				texture 2.jpg
+//				texture NGC1672HST.jpg
+				texture NGC1672HST-red2low.jpg
 			}
 		}
 	}

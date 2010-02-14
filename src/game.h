@@ -6,6 +6,7 @@
 
 #include "movableobject.h"
 #include "player.h"
+#include "metheor.h"
 
 using namespace std;
 
