@@ -42,10 +42,12 @@ class movableObject : public notifyable
     void setGravitationPartner(movableObject *mov);
     
     bool isOutOfArea();
+    void moveSlow();
     
     int Damage;
     
     bool dead;
+ 
   protected:
            
     movableObject * circlePoint;
@@ -57,6 +59,8 @@ class movableObject : public notifyable
     Vector2 acceleration;
     float heaviness; //Gewicht in tonnen
     String ObjectName;
+    private:
+    bool moveslow;
 };
 
 #endif // MOVABLEOBJECT_H

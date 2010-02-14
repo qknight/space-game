@@ -62,8 +62,14 @@ void movableObject::move(){
    
  //  cout << this->circlePoint->position.x << endl;
  //  cout << this->circlePoint->position.y << endl;
+  notifyable::notify();
     
   }else if (!dead){
+    if (moveslow)
+    {
+      moveslow = false;
+      speed = speed*0.01;
+    }
     
     speed += acceleration;
     // speed += constAcceleration;
@@ -71,10 +77,23 @@ void movableObject::move(){
     
     this->acceleration.x = 0;
     this->acceleration.y = 0;
+  notifyable::notify();
   }
 //  mylogger::log("Object " + this->getObjektName() + " moved");
   
-  notifyable::notify();
+}
+void movableObject::moveSlow(){
+  if (!dead){
+    moveslow = true;
+    speed += acceleration;
+    // speed += constAcceleration;
+    Vector2 newSpeed = speed*0.01;
+    position += newSpeed; 
+    
+    this->acceleration.x = 0;
+    this->acceleration.y = 0;
+    notifyable::notify();
+  }
 }
 
 //ändert die Geschwindigkeit

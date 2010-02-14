@@ -18,7 +18,7 @@ class Player : public movableObject
     Ogre::String getObjektName();
 //    int getNumber();
     bool BoostAvaible();
-    void takeDamage(int arg1);
+    void takeDamage(float arg1);
     
         
     // wenn tot dann kann er nicht mehr fliegen...

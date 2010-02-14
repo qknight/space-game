@@ -7,7 +7,7 @@ UpdateSceneFrameListener::UpdateSceneFrameListener(RenderWindow* win, Camera* ca
 {
     CamPosition = CAMFOLLOW;
 //  CamPosition = 3;
-    this->Zoom = 3000;
+    this->Zoom = 13000;
 //   mMouse->capture();
 
     mKeyboard->capture();
@@ -80,9 +80,53 @@ UpdateSceneFrameListener::UpdateSceneFrameListener(RenderWindow* win, Camera* ca
  //  mSceneMgr->setSkyPlane(true, plane, "Examples/SpaceSkyPlane", 1500, 1, true, 1.5f, 150, 150);
       mSceneMgr->setSkyPlane(true, plane, "SkyBox/test1", 200, 1, true, 1.5f, 150, 150);
   
-    this->intersectionQuery = mSceneMgr->createIntersectionQuery();
     
     
+    ManualObject* endOfUniverse =  mSceneMgr->createManualObject("endOfUniverse"); 
+    SceneNode* endOfUniverseNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("endOfUniverse_node"); 
+    
+    MaterialPtr endOfUniverseMaterial = MaterialManager::getSingleton().create("endOfUniverseMaterial","debugger"); 
+    endOfUniverseMaterial->setReceiveShadows(false); 
+    endOfUniverseMaterial->getTechnique(0)->setLightingEnabled(true); 
+    endOfUniverseMaterial->getTechnique(0)->getPass(0)->setDiffuse(1,0,0,0); 
+    endOfUniverseMaterial->getTechnique(0)->getPass(0)->setAmbient(1,0,0); 
+    endOfUniverseMaterial->getTechnique(0)->getPass(0)->setSelfIllumination(1,0,0); 
+    
+    endOfUniverse->begin("endOfUniverseMaterial", Ogre::RenderOperation::OT_LINE_STRIP); 
+    endOfUniverse->position(SPIELFELDBREITE, SPIELFELDBREITE, SPIELEBENE); 
+    endOfUniverse->position(-1*SPIELFELDBREITE, SPIELFELDBREITE, SPIELEBENE); 
+    endOfUniverse->position(-1*SPIELFELDBREITE, -1*SPIELFELDBREITE, SPIELEBENE); 
+    endOfUniverse->position(SPIELFELDBREITE, -1*SPIELFELDBREITE, SPIELEBENE); 
+    endOfUniverse->position(SPIELFELDBREITE, SPIELFELDBREITE, SPIELEBENE); 
+    endOfUniverse->end(); 
+    
+    endOfUniverse->setQueryFlags(100);
+    endOfUniverseNode->attachObject(endOfUniverse);
+    
+    ManualObject* nearlyEndOfUniverse =  mSceneMgr->createManualObject("nearlyEndOfUniverse"); 
+    SceneNode* nearlyEndOfUniverseNode = mSceneMgr->getRootSceneNode()->createChildSceneNode("nearlyEndOfUniverse_node"); 
+    
+    MaterialPtr nearlyEndOfUniverseMaterial = MaterialManager::getSingleton().create("nearlyEndOfUniverseMaterial","debugger"); 
+    nearlyEndOfUniverseMaterial->setReceiveShadows(false); 
+    nearlyEndOfUniverseMaterial->getTechnique(0)->setLightingEnabled(true); 
+    nearlyEndOfUniverseMaterial->getTechnique(0)->getPass(0)->setDiffuse(1,1,0,0); 
+    nearlyEndOfUniverseMaterial->getTechnique(0)->getPass(0)->setAmbient(1,1,0); 
+    nearlyEndOfUniverseMaterial->getTechnique(0)->getPass(0)->setSelfIllumination(1,1,0); 
+    const int abstand = 10500;
+    nearlyEndOfUniverse->begin("nearlyEndOfUniverseMaterial", Ogre::RenderOperation::OT_LINE_STRIP); 
+    nearlyEndOfUniverse->position((SPIELFELDBREITE -abstand), (SPIELFELDBREITE -abstand), SPIELEBENE); 
+    nearlyEndOfUniverse->position(-1*(SPIELFELDBREITE -abstand), (SPIELFELDBREITE -abstand), SPIELEBENE); 
+    nearlyEndOfUniverse->position(-1*(SPIELFELDBREITE -abstand), -1*(SPIELFELDBREITE -abstand), SPIELEBENE); 
+    nearlyEndOfUniverse->position((SPIELFELDBREITE -abstand), -1*(SPIELFELDBREITE -abstand), SPIELEBENE); 
+    nearlyEndOfUniverse->position((SPIELFELDBREITE -abstand), (SPIELFELDBREITE -abstand), SPIELEBENE); 
+    // etc 
+    nearlyEndOfUniverse->end(); 
+    nearlyEndOfUniverse->setQueryFlags(100);
+    nearlyEndOfUniverseNode->attachObject(nearlyEndOfUniverse);
+    
+    
+    this->intersectionQuery = mSceneMgr->createIntersectionQuery();   
+    intersectionQuery->setQueryMask(~100);
 
 }
 
@@ -143,6 +187,8 @@ void UpdateSceneFrameListener::Kolisionen() {
 
         game->kollision(first, second);
     }
+    if (player->isOutOfArea())
+      player->takeDamage(0.2);
 }
 
 void UpdateSceneFrameListener::getNewObjects()
@@ -209,6 +255,8 @@ void UpdateSceneFrameListener::getNewObjects()
    if (NodesNumOld > NodesNum) {
         mSceneMgr->destroyQuery(intersectionQuery);
         this->intersectionQuery = mSceneMgr->createIntersectionQuery();
+	intersectionQuery->setQueryMask(~100);
+
    }
 }
 
@@ -279,7 +327,7 @@ bool UpdateSceneFrameListener::JoyInput() {
             case 9: // start
                 if (player->isDead()) {
                     this->player->teleport(Vector2(rand()%(2*SPIELFELDBREITE) - SPIELFELDBREITE,rand()%(2*SPIELFELDBREITE) - SPIELFELDBREITE));
-                    this->player->setSpeed(Vector2(rand()%3, rand()%3));
+                    //this->player->setSpeed(Vector2(rand()%3, rand()%3));
                     this->player->awake();
                 }
                 break;

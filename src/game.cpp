@@ -48,7 +48,10 @@ void Game::moveLightObjects(){
 
   //Das Bewegen Berechnen
   for (itl = this->lightObjects.begin(); itl != this->lightObjects.end(); ++ itl){
-    (*itl)->move();
+    if (!(*itl)->isOutOfArea())
+      (*itl)->move();
+    else
+      (*itl)->moveSlow();
   //  mylogger::log((*itl)->getObjektName() + " wurde als leichtes Objekt bewegt");
   }
   //kollisionen();
@@ -141,8 +144,10 @@ void Game::removeOutOfAreaObjects(){
     if ((*it)->isOutOfArea()){
       if ((*it)->getObjektName() == "Player"){
 	//spieler an zufaellige position teleportieren.
-        (*it)->teleport(Vector2(rand()%(2*SPIELFELDBREITE) - SPIELFELDBREITE,rand()%(2*SPIELFELDBREITE) - SPIELFELDBREITE));
-        (*it)->setSpeed(Vector2(rand()%3, rand()%3));
+       // (*it)->teleport(Vector2(rand()%(2*SPIELFELDBREITE) - SPIELFELDBREITE,rand()%(2*SPIELFELDBREITE) - SPIELFELDBREITE));
+       // (*it)->setSpeed(Vector2(rand()%3, rand()%3));
+//	Player *plr = (Player)(*it);
+//	(*it)->takeDamage(0.2);
 //	cout << "Objekt Teleportiert" << endl;
       } else {
         //objekt entfernen.

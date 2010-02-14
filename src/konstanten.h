@@ -2,7 +2,7 @@
 #define KONSTANTEN_H
 
 static const float SPIELEBENE = -4500;
-static const float SPIELERBESCHLEUNIGUNG = 0.3;
+static const float SPIELERBESCHLEUNIGUNG = 3;
 static const float SPEEDBOOSTSTRENGTH = 4;
 static const float PLAYERHEAVINESS = 10;
 static const float SPEEDBOOST = 300;
