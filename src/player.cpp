@@ -16,8 +16,9 @@ bool Player::fireWappon(projectile* obj)
 void Player::reload()
 {
   firedWappon--;
-  if (this->shild < this->maxShild && !this->dead)
-    shild += SHILDREGENERATION;
+  if (this->shild < this->maxShild && !this->dead){
+    shild += SHILDREGENERATION*maxShild/50 + SHILDREGENERATION;
+  }
   if (boostAvaible < SPEEDBOOST)
     boostAvaible += 0.02;
   if (boostAvaible >= SPEEDBOOST)
@@ -73,8 +74,8 @@ void Player::move(){
 
 void Player::kill(){
     dead = true;
-    this->speed = 0;
-    this->acceleration = 0;
+//    this->speed = 0;
+//    this->acceleration = 0;
     //cout << "KILL!!!";
 }
  bool Player::isDead(){

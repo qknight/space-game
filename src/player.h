@@ -45,7 +45,7 @@ class Player : public movableObject
     static const float INITIALSHILD = 33;
     static const float INITIALWAPPON = 33;
     static const float WAPPONACCELERATION = 2;
-    static const float SHILDREGENERATION = 0.01;
+    static const float SHILDREGENERATION = 0.005;
     
     float life;
     float maxShild;

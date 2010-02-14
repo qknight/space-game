@@ -51,6 +51,7 @@ protected:
     //Verschiedene Kammerapositionen.
     static const int CAMTOPVIEW = 0;
     static const int CAMFOLLOW = 1;
+    static const int DYNAMICCAMFOLLOW = 2;
     int CamPosition;
 
     float Zoom;
