@@ -1,0 +1,35 @@
+vertex_program shader/gradientVP cg
+{
+ 	source gradientshader.cg
+	entry_point gradient_vp
+	profiles vp40
+
+	default_params	
+	{
+	   param_named_auto worldViewProj  worldviewproj_matrix
+           param_named_auto camera_position_object_space camera_position_object_space
+   	}
+} 
+
+fragment_program shader/gradientFP cg
+{
+	source gradientshader.cg
+	entry_point main_fp
+	profiles fp40
+}
+
+material shader/ring
+{ 
+ 	technique
+	{
+		pass
+		{
+			vertex_program_ref shader/gradientVP {
+                         param_named_auto customParamColour custom 0
+                         param_named_auto customParamRadius custom 1
+			}
+			fragment_program_ref shader/gradientFP { }
+		}
+	}
+}
+

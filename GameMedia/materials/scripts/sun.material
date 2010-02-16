@@ -1,0 +1,17 @@
+material space-game/mySun
+{
+        technique
+        {
+                pass
+                {
+
+
+                        texture_unit
+                        {
+                                texture Layer2_2048.jpg
+				env_map spherical
+                        }
+
+                }
+        }
+}

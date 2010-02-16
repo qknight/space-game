@@ -41,13 +41,13 @@ class Game
     
   protected:   
     //Leichte Objekte auf die Gravitation einwirkt
-    list<movableObject*> lightObjects;
+    std::list<movableObject*> lightObjects;
     
     //Schwere Objekte die Gravitation Verursachen.
-    list<movableObject*> heavyObjects;
+    std::list<movableObject*> heavyObjects;
     
     //Liste aller neu hinzugefügten Objekte die in der Anzeige übernommen werden sollten.
-    stack<movableObject*> nearlyAddedObjects;
+    std::stack<movableObject*> nearlyAddedObjects;
     
 };
 

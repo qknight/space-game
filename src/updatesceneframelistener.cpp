@@ -159,7 +159,7 @@ bool UpdateSceneFrameListener::frameStarted(const FrameEvent &evt) {
 void UpdateSceneFrameListener::Kolisionen() {
     IntersectionSceneQueryResult& queryResult = intersectionQuery->execute();
 
-    for (list<SceneQueryMovableObjectPair>::iterator it = queryResult.movables2movables.begin();it != queryResult.movables2movables.end(); ++it) {
+    for (std::list<SceneQueryMovableObjectPair>::iterator it = queryResult.movables2movables.begin();it != queryResult.movables2movables.end(); ++it) {
         movableObject * first = Ogre::any_cast<movableObject*>((*it).first->getUserAny());
         movableObject * second = Ogre::any_cast<movableObject*>((*it).second->getUserAny());
 
@@ -193,11 +193,12 @@ void UpdateSceneFrameListener::getNewObjects()
             node->scale(Vector3(3,3,3));
             obj->addNotifier(new movObjChangedNotifier(node, mSceneMgr));
             ent = mSceneMgr->createEntity("Planet" + str.str(),"sphere.mesh");
+// 	    ent->setMaterialName("space-game/myMars");
         } else if (objName == "SUN") {
             node->scale(Vector3(15,15,15));
             obj->addNotifier(new movObjChangedNotifier(node, mSceneMgr));
             ent = mSceneMgr->createEntity("SUN" + str.str(),"sphere.mesh");
-	    ent->setMaterialName("space-game/myMoon");
+	    
             Light* myLight = mSceneMgr->createLight("nameOfTheLight");
             myLight->setType(Light::LT_POINT);
             //myLight->setPosition(200, 300, 400);
@@ -205,15 +206,18 @@ void UpdateSceneFrameListener::getNewObjects()
             myLight->setSpecularColour(1, 0.5, 0.2);
             node->attachObject(myLight);
 	    
-// 	    Vector4 vColour = Vector4(12, 23, 23, 122);
-// 	    Vector4 vRadius  = Vector4(500,0,0,0);
-// 	    node->setCustomParameter(0,vColour);
-// 	    node->setCustomParameter(1,vRadius);
-//             ent->setMaterialName("shader/gradient");
-	    
+	    // adds the green lines from here:
+	    // http://www.ogre3d.org/wiki/index.php/Fading_Object_Shader
+	    ent->setMaterialName("space-game/mySun");
+	    Vector4 vColour = Vector4(12, 23, 23, 122);
+	    Vector4 vRadius = Vector4(500,0,0,0);
+// 	    material->setCustomParameter(0,vColour);
+// 	    material->setCustomParameter(1,vRadius);
+            ent->setMaterialName("shader/ring");
         } else if (objName == "Moon") {
             obj->addNotifier(new movObjChangedNotifier(node, mSceneMgr));
             ent = mSceneMgr->createEntity("Moon" + str.str(),"sphere.mesh");
+// 	    ent->setMaterialName("space-game/myMoon");
         } else if (objName == "Komet") {
             node->scale(0.4,0.4,0.4);
             obj->addNotifier(new movObjChangedNotifier(node, mSceneMgr));

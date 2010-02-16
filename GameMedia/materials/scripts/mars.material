@@ -1,0 +1,17 @@
+material space-game/myMars
+{
+        technique
+        {
+                pass
+                {
+
+
+                        texture_unit
+                        {
+                                texture marsmap.jpg 
+				env_map spherical
+                        }
+
+                }
+        }
+}

@@ -36,8 +36,8 @@ movableObject* Game::getNextNewObject(){
 
 //bewegt alle leichten Objekte inklusive ihrer gravitation (gravitation wird nur von schweren objekten ausgelöst)
 void Game::moveLightObjects(){
-  list<movableObject*>::iterator ith;
-  list<movableObject*>::iterator itl;
+  std::list<movableObject*>::iterator ith;
+  std::list<movableObject*>::iterator itl;
   
   //Die Gravitation berechnen 
   for (ith = this->heavyObjects.begin();ith != this->heavyObjects.end(); ++ith){
@@ -96,8 +96,8 @@ void Game::kollision(movableObject* arg1, movableObject* arg2){
 }
 //bewegt alle schweren Objekte inklusive ihrer gravitation (gravitation wird nur von schweren objekten ausgelöst)
 void Game::moveHeavyObjects(){
-  list<movableObject*>::iterator ith;
-  list<movableObject*>::iterator itl;
+  std::list<movableObject*>::iterator ith;
+  std::list<movableObject*>::iterator itl;
   //gravitation berechnen
  /* for (ith = this->heavyObjects.begin();ith != this->heavyObjects.end(); ++ith){
     for (itl = this->heavyObjects.begin();itl != this->heavyObjects.end(); ++itl){
@@ -135,7 +135,7 @@ void Game::kollisionen() {
 
 void Game::removeOutOfAreaObjects(){
   
-  list<movableObject*>::iterator it;
+  std::list<movableObject*>::iterator it;
   
   for (it = this->lightObjects.begin(); it != this->lightObjects.end(); ++ it){
     if ((*it)->isOutOfArea()){

@@ -8,7 +8,7 @@ material space-game/myMoon
 
                         texture_unit
                         {
-                                cubic_texture cubemap.jpg combinedUVW
+                                texture moon_8k_color_brim16.jpg 2d
                                 tex_address_mode clamp
                                 env_map cubic_reflection
                         }

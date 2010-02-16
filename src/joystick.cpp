@@ -15,7 +15,6 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
     
-    
   based on my previous code which can be found here:
     http://lastlog.de/wiki/index.php/SDL-joystick and 
     http://lastlog.de/misc/sdl_joystick_demo.html
