@@ -21,6 +21,9 @@ INCLUDE_DIRECTORIES(
 )
 
 ADD_EXECUTABLE(space-game 
+  src/myoverlays.cpp
+  src/spielfeldumrandung.cpp
+  src/metheor.cpp
   src/game.cpp
   src/main.cpp
   src/movableobject.cpp
