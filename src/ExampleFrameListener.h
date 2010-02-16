@@ -191,7 +191,7 @@ public:
 		if(mKeyboard->isKeyDown(OIS::KC_LEFT))
 			mCamera->yaw(mRotScale);
 */
-		if( mKeyboard->isKeyDown(OIS::KC_ESCAPE) || mKeyboard->isKeyDown(OIS::KC_Q) )
+		if( mKeyboard->isKeyDown(OIS::KC_ESCAPE) /*|| mKeyboard->isKeyDown(OIS::KC_Q)*/ )
 			return false;
 
      /*  	if( mKeyboard->isKeyDown(OIS::KC_F) && mTimeUntilNextToggle <= 0 )

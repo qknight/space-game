@@ -4,9 +4,11 @@
 bool Player::fireWappon(projectile* obj)
 {
   if(firedWappon < 1 && !this->isDead()){
-    firedWappon = WAPPONREALOADTIME;
+    firedWappon = WAPPONREALOADTIME + 50/wappon;
     obj->setSpeed(obj->getSpeed() + this->speed);
-    obj->teleport(this->getPosition() + obj->getSpeed().normalisedCopy()*this->wapponStartPosition);   
+    //obj->teleport((this->getPosition()) + obj->getSpeed().normalisedCopy()*this->wapponStartPosition);   
+    obj->teleport(this->getPosition() + obj->getSpeed());
+    obj->Damage = wappon/1.7;
     this->game->addLightObject(obj);
     return true;
   }
@@ -16,6 +18,9 @@ bool Player::fireWappon(projectile* obj)
 void Player::reload()
 {
   firedWappon--;
+  if (this->shild < this->maxShild && !this->dead){
+    shild += SHILDREGENERATION*maxShild/50 + SHILDREGENERATION;
+  }
   if (boostAvaible < SPEEDBOOST)
     boostAvaible += 0.02;
   if (boostAvaible >= SPEEDBOOST)
@@ -35,7 +40,8 @@ Player::Player(Game *game,float heaviness):movableObject("Player", heaviness)
   this->game = game;
   
   life = INITIALLIVE;
-  shild = INITIALSHILD;
+  shild = 0;
+  maxShild = INITIALSHILD;
   wappon = INITIALWAPPON;
   
   firedWappon = 0;
@@ -48,7 +54,7 @@ Player::Player(Game *game,float heaviness):movableObject("Player", heaviness)
   //num++;
 }
 
-void Player::takeDamage(int arg1){
+void Player::takeDamage(float arg1){
     this->shild -= arg1;
   //cout  <<"s: " << shild << endl;
     if (shild < 0){
@@ -70,8 +76,8 @@ void Player::move(){
 
 void Player::kill(){
     dead = true;
-    this->speed = 0;
-    this->acceleration = 0;
+//    this->speed = 0;
+//    this->acceleration = 0;
     //cout << "KILL!!!";
 }
  bool Player::isDead(){
@@ -80,9 +86,10 @@ void Player::kill(){
 void Player::awake(){
     dead = false;  
   life = INITIALLIVE;
-  shild = INITIALSHILD;
-  wappon = INITIALWAPPON;
+ // maxShild = INITIALSHILD;
+  //wappon = INITIALWAPPON;
   this->speed = 0;
+  this->acceleration = 0;
 }
 /* 
 int Player::getNumber()
@@ -90,4 +97,32 @@ int Player::getNumber()
   return num;
 }
 */
+float Player::getLife(){
+  return life;
+}
+float Player::getShild(){
+  return shild;
+}
+float Player::getWappon(){
+  return wappon;
+}
 
+void Player::moreShild(){
+  float add = 1;
+  this->maxShild += add;
+  if (maxShild > 120)
+    maxShild = 120;
+  
+  this->wappon = (INITIALWAPPON*INITIALSHILD)/maxShild;
+  
+}
+void Player::moreWapponPower(){
+  
+  float add = 1;
+  this->wappon += add;
+  if (wappon > 120)
+    wappon = 120;
+  this->maxShild = (INITIALWAPPON*INITIALSHILD)/wappon;
+  if (maxShild < this->shild)
+    shild = maxShild;
+}

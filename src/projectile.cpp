@@ -3,7 +3,7 @@
 
 projectile::projectile(float speedboost, Ogre::Vector2 acceleration, float heaviness) : 
            movableObject("projectile", heaviness) {
-  num++;
+ // num++;
 /*  this->acceleration = acceleration;
   acceleration.normalise();
   acceleration *= speedboost;
@@ -23,8 +23,8 @@ static Ogre::String projectile::getObjektName(){
 }*/
 
 
-
+/*
 int projectile::getNumber()
 {
   return num;
-}
+}*/

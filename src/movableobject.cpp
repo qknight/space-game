@@ -11,7 +11,7 @@ movableObject::movableObject(String ObjectName, float heaviness)
   
   this->position.x = 0;
   this->position.y = 0;
-  this->speed.x= 0;
+  this->speed.x = 0;
   this->speed.y = 0;
   this->acceleration.x = 0;
   this->acceleration.y = 0;
@@ -27,6 +27,9 @@ movableObject::movableObject(String ObjectName, float heaviness)
   
   this->heaviness = heaviness;
   
+  circle = false;
+  dead = false;
+  this->circlePoint = NULL;
 }
 
 movableObject::~movableObject()
@@ -59,8 +62,13 @@ void movableObject::move(){
    
  //  cout << this->circlePoint->position.x << endl;
  //  cout << this->circlePoint->position.y << endl;
+  notifyable::notify();
     
   }else if (!dead){
+    if (moveslow)
+    {
+      moveslow = false;
+    }
     
     speed += acceleration;
     // speed += constAcceleration;
@@ -68,15 +76,32 @@ void movableObject::move(){
     
     this->acceleration.x = 0;
     this->acceleration.y = 0;
+  notifyable::notify();
   }
 //  mylogger::log("Object " + this->getObjektName() + " moved");
   
-  notifyable::notify();
+}
+void movableObject::moveSlow(){
+  if (!dead){
+    if (!moveslow){
+      moveslow = true;
+      speed = speed*0.01;
+    }
+    speed += acceleration;
+    // speed += constAcceleration;
+    Vector2 newSpeed = speed*0.01;
+    position += newSpeed; 
+    
+    this->acceleration.x = 0;
+    this->acceleration.y = 0;
+    notifyable::notify();
+  }
 }
 
 //ändert die Geschwindigkeit
 void movableObject::accelerate(Vector2 acceleration){
-  this->acceleration += acceleration;
+  if (!dead)
+    this->acceleration += acceleration;
 //  mylogger::log(this->getObjektName() + " beschleunigt");
 }
 
@@ -84,32 +109,33 @@ void movableObject::accelerate(Vector2 acceleration){
 void movableObject::calculateGravity(movableObject *gravity){
     //Gravitationskonstante in der Realität ist sie 6,67428*10^-11
     //da hier in tonnen gerechnet wird nur 10^-9
-    const double G = 0.00000067428;
-    
-    //abstand der beiden Körper im quadrat
-    double r = (position.x - gravity->getPosition().x)*(position.x - gravity->getPosition().x) +
-	      (position.y - gravity->getPosition().y)*(position.y - gravity->getPosition().y);
-    
-    //die Kraft die auf die Körper einwirkt.
-    double dF = (G * gravity->getHeaviness() * this->heaviness)/r;
-    //die Richtung der Kraft als Vector
-    Vector2 vF = gravity->position - this->position;
-    //Die kraft bekommt die richtige länge
-    if (vF.isZeroLength()){
-      //hohe gravitation
-    //vF *= 1000;
-    }else{
-      double l = dF/vF.length();
-      vF.x *= l;
-      vF.y *= l;
+    if (!dead){
+      const double G = 0.00000067428;
       
-      //die Beschleunigung die dieses Objekt erfährt
-      Vector2 a = vF / this->heaviness;
+      //abstand der beiden Körper im quadrat
+      double r = (position.x - gravity->getPosition().x)*(position.x - gravity->getPosition().x) +
+		(position.y - gravity->getPosition().y)*(position.y - gravity->getPosition().y);
       
-      //beschleunigt das Objekt.
-      this->speed += a;
-    
-  }  
+      //die Kraft die auf die Körper einwirkt.
+      double dF = (G * gravity->getHeaviness() * this->heaviness)/r;
+      //die Richtung der Kraft als Vector
+      Vector2 vF = gravity->position - this->position;
+      //Die kraft bekommt die richtige länge
+      if (vF.isZeroLength()){
+	//hohe gravitation
+      //vF *= 1000;
+      }else{
+	double l = dF/vF.length();
+	vF.x *= l;
+	vF.y *= l;
+	
+	//die Beschleunigung die dieses Objekt erfährt
+	Vector2 a = vF / this->heaviness;
+	
+	//beschleunigt das Objekt.
+	this->speed += a;
+      }
+    }  
 /*
 //der selbe code nur dass die eigene Masse herrausgekürtzt wurde.
 //abstand der beiden Körper im quadrat
